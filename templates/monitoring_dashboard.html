@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>監視ダッシュボード - TOU Connect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .header p {
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e1e5e9;
+        }
+
+        .card h3 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .status-healthy { color: #38a169; }
+        .status-warning { color: #d69e2e; }
+        .status-critical { color: #e53e3e; }
+
+        .alert-item {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .alert-high { border-color: #fc8181; background: #fff5f5; }
+        .alert-medium { border-color: #f6ad55; background: #fffaf0; }
+        .alert-low { border-color: #68d391; background: #f0fff4; }
+
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .alert-message {
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+
+        .alert-time {
+            color: #718096;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .metrics-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .metrics-table th,
+        .metrics-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .metrics-table th {
+            background-color: #f7fafc;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .performance-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .performance-name {
+            font-weight: 500;
+        }
+
+        .performance-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: #718096;
+        }
+
+        .refresh-button {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .refresh-button:hover {
+            background: #3182ce;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #718096;
+            padding: 2rem;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔍 監視ダッシュボード</h1>
+        <p>TOU Connect システム監視・運用管理</p>
+    </div>
+
+    <div class="container">
+        <button class="refresh-button" onclick="refreshDashboard()">
+            🔄 データを更新
+        </button>
+
+        <div class="dashboard-grid">
+            <!-- システム概要 -->
+            <div class="card">
+                <h3>📊 システム概要</h3>
+                <div id="system-overview">
+                    <div class="loading">読み込み中...</div>
+                </div>
+            </div>
+
+            <!-- アクティブアラート -->
+            <div class="card">
+                <h3>🚨 アクティブアラート</h3>
+                <div id="active-alerts">
+                    <div class="loading">読み込み中...</div>
+                </div>
+            </div>
+
+            <!-- パフォーマンス統計 -->
+            <div class="card">
+                <h3>⚡ パフォーマンス統計</h3>
+                <div id="performance-stats">
+                    <div class="loading">読み込み中...</div>
+                </div>
+            </div>
+
+            <!-- 最新メトリクス -->
+            <div class="card">
+                <h3>📈 最新メトリクス</h3>
+                <div id="recent-metrics">
+                    <div class="loading">読み込み中...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 詳細メトリクステーブル -->
+        <div class="card">
+            <h3>📋 詳細メトリクス</h3>
+            <div id="detailed-metrics">
+                <div class="loading">読み込み中...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let refreshInterval;
+
+        // ページ読み込み時に初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshDashboard();
+            // 30秒ごとに自動更新
+            refreshInterval = setInterval(refreshDashboard, 30000);
+        });
+
+        async function refreshDashboard() {
+            try {
+                // 各セクションを並行して更新
+                await Promise.all([
+                    updateSystemOverview(),
+                    updateActiveAlerts(),
+                    updatePerformanceStats(),
+                    updateRecentMetrics(),
+                    updateDetailedMetrics()
+                ]);
+            } catch (error) {
+                console.error('Dashboard refresh error:', error);
+            }
+        }
+
+        async function updateSystemOverview() {
+            try {
+                const response = await fetch('/api/monitoring/overview');
+                const data = await response.json();
+                
+                const overview = data.system_overview;
+                const metricsCollection = data.metrics_collection;
+                
+                const healthClass = `status-${overview.system_health}`;
+                
+                document.getElementById('system-overview').innerHTML = `
+                    <div class="metric-value ${healthClass}">${overview.system_health.toUpperCase()}</div>
+                    <div class="metric-label">システム健全性</div>
+                    
+                    <div style="margin-top: 1rem;">
+                        <div><strong>稼働時間:</strong> ${overview.uptime_human}</div>
+                        <div><strong>総メトリクス:</strong> ${overview.total_metrics.toLocaleString()}</div>
+                        <div><strong>アクティブアラート:</strong> ${overview.active_alerts}</div>
+                        <div><strong>メトリクス収集:</strong> ${metricsCollection.collectors_running}/${metricsCollection.total_collectors} 実行中</div>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('system-overview').innerHTML = '<div class="no-data">データの取得に失敗しました</div>';
+            }
+        }
+
+        async function updateActiveAlerts() {
+            try {
+                const response = await fetch('/api/monitoring/alerts?active_only=true&hours=24');
+                const data = await response.json();
+                
+                const alertsContainer = document.getElementById('active-alerts');
+                
+                if (data.alerts.length === 0) {
+                    alertsContainer.innerHTML = '<div class="no-data">✅ アクティブなアラートはありません</div>';
+                    return;
+                }
+                
+                const alertsHtml = data.alerts.map(alert => `
+                    <div class="alert-item alert-${alert.severity}">
+                        <div class="alert-title">[${alert.severity.toUpperCase()}] ${alert.title}</div>
+                        <div class="alert-message">${alert.message}</div>
+                        <div class="alert-time">${new Date(alert.timestamp).toLocaleString('ja-JP')}</div>
+                    </div>
+                `).join('');
+                
+                alertsContainer.innerHTML = alertsHtml;
+            } catch (error) {
+                document.getElementById('active-alerts').innerHTML = '<div class="no-data">データの取得に失敗しました</div>';
+            }
+        }
+
+        async function updatePerformanceStats() {
+            try {
+                const response = await fetch('/api/monitoring/performance?hours=1');
+                const data = await response.json();
+                
+                const statsContainer = document.getElementById('performance-stats');
+                
+                if (Object.keys(data.performance_stats).length === 0) {
+                    statsContainer.innerHTML = '<div class="no-data">パフォーマンスデータがありません</div>';
+                    return;
+                }
+                
+                const statsHtml = Object.entries(data.performance_stats).map(([operation, stats]) => `
+                    <div class="performance-item">
+                        <div class="performance-name">${operation}</div>
+                        <div class="performance-stats">
+                            <span>${stats.total_requests} req</span>
+                            <span>${stats.avg_duration_ms.toFixed(1)}ms</span>
+                            <span class="${stats.error_rate > 5 ? 'status-critical' : 'status-healthy'}">${stats.error_rate.toFixed(1)}% err</span>
+                        </div>
+                    </div>
+                `).join('');
+                
+                statsContainer.innerHTML = statsHtml;
+            } catch (error) {
+                document.getElementById('performance-stats').innerHTML = '<div class="no-data">データの取得に失敗しました</div>';
+            }
+        }
+
+        async function updateRecentMetrics() {
+            try {
+                const response = await fetch('/api/monitoring/metrics?hours=1');
+                const data = await response.json();
+                
+                const metricsContainer = document.getElementById('recent-metrics');
+                
+                if (data.metrics.length === 0) {
+                    metricsContainer.innerHTML = '<div class="no-data">メトリクスデータがありません</div>';
+                    return;
+                }
+                
+                // 最新10件を表示
+                const recentMetrics = data.metrics.slice(-10);
+                
+                const metricsHtml = recentMetrics.map(metric => `
+                    <div class="performance-item">
+                        <div class="performance-name">${metric.name}</div>
+                        <div class="performance-stats">
+                            <span>${metric.value} ${metric.unit}</span>
+                            <span>${metric.type}</span>
+                        </div>
+                    </div>
+                `).join('');
+                
+                metricsContainer.innerHTML = metricsHtml;
+            } catch (error) {
+                document.getElementById('recent-metrics').innerHTML = '<div class="no-data">データの取得に失敗しました</div>';
+            }
+        }
+
+        async function updateDetailedMetrics() {
+            try {
+                const response = await fetch('/api/monitoring/metrics?hours=24');
+                const data = await response.json();
+                
+                const detailedContainer = document.getElementById('detailed-metrics');
+                
+                if (data.metrics.length === 0) {
+                    detailedContainer.innerHTML = '<div class="no-data">メトリクスデータがありません</div>';
+                    return;
+                }
+                
+                // メトリクスをタイプ別に分類
+                const metricsByType = data.metrics.reduce((acc, metric) => {
+                    if (!acc[metric.type]) acc[metric.type] = [];
+                    acc[metric.type].push(metric);
+                    return acc;
+                }, {});
+                
+                let tableHtml = '<table class="metrics-table"><thead><tr><th>メトリクス名</th><th>値</th><th>タイプ</th><th>タグ</th><th>時刻</th></tr></thead><tbody>';
+                
+                // 最新100件を表示
+                const recentMetrics = data.metrics.slice(-100);
+                
+                recentMetrics.forEach(metric => {
+                    const tags = Object.entries(metric.tags).map(([k, v]) => `${k}:${v}`).join(', ');
+                    const timestamp = new Date(metric.timestamp).toLocaleString('ja-JP');
+                    
+                    tableHtml += `
+                        <tr>
+                            <td>${metric.name}</td>
+                            <td>${metric.value} ${metric.unit}</td>
+                            <td>${metric.type}</td>
+                            <td>${tags}</td>
+                            <td>${timestamp}</td>
+                        </tr>
+                    `;
+                });
+                
+                tableHtml += '</tbody></table>';
+                detailedContainer.innerHTML = tableHtml;
+            } catch (error) {
+                document.getElementById('detailed-metrics').innerHTML = '<div class="no-data">データの取得に失敗しました</div>';
+            }
+        }
+
+        // ページを離れる時に自動更新を停止
+        window.addEventListener('beforeunload', function() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+        });
+    </script>
+</body>
+</html>

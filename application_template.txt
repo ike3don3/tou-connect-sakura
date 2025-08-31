@@ -1,0 +1,53 @@
+Twitter API v2 Application Template
+=====================================
+
+【基本情報】
+Project Name: TOU Connect - Student Networking Platform
+Organization: Individual Developer (Educational Project)
+Country: Japan
+Use Case: Academic research and educational support
+
+【詳細説明（コピー&ペースト用）】
+
+Project Title: TOU Connect - Student Networking Platform for Tokyo Online University
+
+Project Description:
+I am developing an educational platform to help students at Tokyo Online University (TOU) connect with each other and build academic communities. As a distance learning institution, TOU students often struggle to form meaningful connections with their peers due to the lack of physical campus interactions.
+
+Specific Use Cases:
+1. Profile Analysis: Analyze public Twitter profiles to identify TOU-related accounts and academic interests
+2. Interest Extraction: Extract academic interests, study fields, and learning patterns from public tweets
+3. Community Building: Help students find study partners with similar academic interests and goals
+4. Academic Support: Facilitate collaboration on coursework, projects, and study groups
+5. Networking Facilitation: Connect students based on complementary skills and shared academic pursuits
+
+Data Usage and Privacy:
+- Only public profile information and tweets will be accessed
+- No private messages, DMs, or protected content will be accessed
+- Data will be used solely for academic networking and educational purposes
+- All data handling will comply with privacy regulations and Twitter's terms of service
+- Personal information will be anonymized and aggregated for analysis
+- No data will be sold, shared with third parties, or used for commercial purposes
+
+Technical Implementation:
+- Using Twitter API v2 Basic tier (respecting 10,000 tweets/month limit)
+- Implementing proper rate limiting and caching mechanisms
+- Storing only aggregated, anonymized insights for matching purposes
+- Using AI analysis (Google Gemini) to extract academic interests and compatibility
+- No automated posting or engagement - read-only access only
+
+Educational Impact:
+This platform addresses a significant challenge in distance education by helping students overcome isolation and build meaningful academic relationships. The goal is to improve learning outcomes, increase student engagement, and enhance the overall university experience for distance learning students.
+
+The project is purely educational and non-commercial, aimed at supporting the academic success and social well-being of university students in a digital learning environment.
+
+【追加情報】
+- Expected monthly API usage: 5,000-8,000 tweets
+- Target user base: Tokyo Online University students (approximately 500-1000 users)
+- Data retention: Minimal, only for matching purposes
+- Open source: Planning to make the project open source for educational use
+
+【連絡先情報】
+- Email: [あなたのメールアドレス]
+- Twitter: @ike3don3
+- Project Repository: [GitHubリンク（作成後）]

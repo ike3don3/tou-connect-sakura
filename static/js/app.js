@@ -1,0 +1,426 @@
+// TOU Connect Modern Frontend JavaScript
+
+class TouConnect {
+    constructor() {
+        this.apiBase = '';
+        this.currentUser = null;
+        this.analysisResults = null;
+        this.init();
+    }
+
+    init() {
+        this.bindEvents();
+        this.loadSavedData();
+        this.showWelcomeAnimation();
+        
+        // デバッグ用：ユーザー名検証テスト
+        console.log('Username validation test:');
+        console.log('ike3don3:', /^[a-zA-Z0-9_]{1,15}$/.test('ike3don3'));
+        console.log('@ike3don3 cleaned:', 'ike3don3', /^[a-zA-Z0-9_]{1,15}$/.test('ike3don3'));
+    }
+
+    bindEvents() {
+        // フォーム送信イベント
+        const analyzeForm = document.getElementById('analysis-form');
+        if (analyzeForm) {
+            analyzeForm.addEventListener('submit', (e) => this.handleAnalyzeSubmit(e));
+        }
+
+        // マッチング検索イベント
+        const matchingBtn = document.getElementById('findMatches');
+        if (matchingBtn) {
+            matchingBtn.addEventListener('click', () => this.findMatches());
+        }
+
+        // リアルタイム入力検証
+        const usernameInput = document.getElementById('username');
+        if (usernameInput) {
+            usernameInput.addEventListener('input', (e) => this.validateUsername(e.target.value));
+        }
+
+        // キーボードショートカット
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                this.triggerAnalysis();
+            }
+        });
+    }
+
+    showWelcomeAnimation() {
+        const header = document.querySelector('.header');
+        if (header) {
+            header.style.opacity = '0';
+            header.style.transform = 'translateY(-20px)';
+            
+            setTimeout(() => {
+                header.style.transition = 'all 0.8s ease';
+                header.style.opacity = '1';
+                header.style.transform = 'translateY(0)';
+            }, 100);
+        }
+    }
+
+    validateUsername(username) {
+        const input = document.getElementById('username');
+        const feedback = document.getElementById('usernameFeedback');
+        
+        if (!username) {
+            this.showInputFeedback(input, feedback, '', 'neutral');
+            return false;
+        }
+
+        // @マークを削除（ユーザーが@付きで入力した場合）
+        const cleanUsername = username.replace(/^@/, '');
+        
+        // Twitterのユーザー名規則：英数字とアンダースコア、1-15文字
+        // 数字で始まることも可能、特殊文字も一部許可
+        const isValid = /^[a-zA-Z0-9_]{1,15}$/.test(cleanUsername);
+        
+        if (isValid) {
+            // 入力フィールドをクリーンアップ（@マークを削除）
+            if (input && username !== cleanUsername) {
+                input.value = cleanUsername;
+            }
+            this.showInputFeedback(input, feedback, '✅ 有効なユーザー名です', 'success');
+            return true;
+        } else {
+            this.showInputFeedback(input, feedback, '❌ 無効なユーザー名です（英数字と_のみ、1-15文字）', 'error');
+            return false;
+        }
+    }
+
+    showInputFeedback(input, feedback, message, type) {
+        if (!feedback) return;
+
+        feedback.textContent = message;
+        feedback.className = `input-feedback ${type}`;
+        
+        if (type === 'success') {
+            input.style.borderColor = '#10b981';
+        } else if (type === 'error') {
+            input.style.borderColor = '#ef4444';
+        } else {
+            input.style.borderColor = '#e5e7eb';
+        }
+    }
+
+    async handleAnalyzeSubmit(e) {
+        e.preventDefault();
+        
+        let username = document.getElementById('username').value.trim();
+        if (!username) {
+            this.showAlert('ユーザー名を入力してください', 'error');
+            return;
+        }
+
+        // @マークを削除（ユーザーが@付きで入力した場合）
+        username = username.replace(/^@/, '');
+        
+        // 入力フィールドを更新
+        document.getElementById('username').value = username;
+
+        if (!this.validateUsername(username)) {
+            return;
+        }
+
+        await this.analyzeProfile(username);
+    }
+
+    async analyzeProfile(username) {
+        try {
+            this.showLoading(true);
+            this.hideResults();
+            
+            const response = await fetch('/api/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                this.currentUser = username;
+                this.analysisResults = data.analysis;
+                this.displayAnalysisResults(data);
+                this.saveToLocalStorage(data);
+                this.showAlert('分析が完了しました！', 'success');
+            } else {
+                throw new Error(data.error || '分析に失敗しました');
+            }
+
+        } catch (error) {
+            console.error('分析エラー:', error);
+            this.showAlert(error.message || '分析中にエラーが発生しました', 'error');
+        } finally {
+            this.showLoading(false);
+        }
+    }
+
+    displayAnalysisResults(data) {
+        const resultsDiv = document.getElementById('results');
+        if (!resultsDiv) return;
+
+        resultsDiv.innerHTML = `
+            <div class="card">
+                <h2>🎯 ${data.username}さんの分析結果</h2>
+                <div class="analysis-content">
+                    <div class="analysis-section">
+                        <h3><i class="fas fa-brain"></i> AI分析結果</h3>
+                        <div class="analysis-text">
+                            ${this.formatAnalysisText(data.analysis)}
+                        </div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-number">85%</span>
+                            <span class="stat-label">技術適性</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">92%</span>
+                            <span class="stat-label">学習意欲</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">78%</span>
+                            <span class="stat-label">コミュニケーション</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button id="findMatches" class="btn btn-primary">
+                        <i class="fas fa-users"></i> 学友を探す
+                    </button>
+                    <button onclick="touConnect.shareResults()" class="btn btn-secondary">
+                        <i class="fas fa-share"></i> 結果をシェア
+                    </button>
+                </div>
+            </div>
+        `;
+
+        // 新しいボタンのイベントリスナーを追加
+        document.getElementById('findMatches').addEventListener('click', () => this.findMatches());
+
+        this.showResults();
+    }
+
+    formatAnalysisText(text) {
+        // マークダウン風のテキストをHTMLに変換
+        return text
+            .replace(/【(.+?)】/g, '<h4><i class="fas fa-star"></i> $1</h4>')
+            .replace(/- (.+)/g, '<span class="tag">$1</span>')
+            .replace(/\n/g, '<br>');
+    }
+
+    async findMatches() {
+        if (!this.currentUser) {
+            this.showAlert('まず分析を実行してください', 'error');
+            return;
+        }
+
+        try {
+            this.showLoading(true, 'マッチング相手を検索中...');
+
+            const response = await fetch(`/api/matching/${this.currentUser}`);
+            const data = await response.json();
+
+            if (data.success) {
+                this.displayMatchingResults(data.matches);
+                this.showAlert(`${data.matches.length}人の学友候補が見つかりました！`, 'success');
+            } else {
+                throw new Error(data.error || 'マッチング検索に失敗しました');
+            }
+
+        } catch (error) {
+            console.error('マッチングエラー:', error);
+            this.showAlert(error.message || 'マッチング検索中にエラーが発生しました', 'error');
+        } finally {
+            this.showLoading(false);
+        }
+    }
+
+    displayMatchingResults(matches) {
+        const resultsDiv = document.getElementById('results');
+        if (!resultsDiv) return;
+
+        const matchingHtml = `
+            <div class="card">
+                <h2><i class="fas fa-users"></i> あなたにおすすめの学友</h2>
+                <div class="matching-results">
+                    ${matches.map(match => `
+                        <div class="match-card">
+                            <div class="match-header">
+                                <h3>${match.display_name}</h3>
+                                <div class="compatibility-score">${Math.round(match.compatibility * 100)}%</div>
+                            </div>
+                            <div class="match-details">
+                                <p><strong>共通の関心事:</strong> ${match.common_interests.join(', ')}</p>
+                                <p><strong>マッチ理由:</strong> ${match.match_reason}</p>
+                            </div>
+                            <div class="match-actions">
+                                <button class="btn btn-primary" onclick="touConnect.connectWith('${match.username}')">
+                                    <i class="fas fa-handshake"></i> つながる
+                                </button>
+                                <button class="btn btn-secondary" onclick="touConnect.viewProfile('${match.username}')">
+                                    <i class="fas fa-eye"></i> プロフィール
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="action-buttons">
+                    <button onclick="touConnect.newAnalysis()" class="btn btn-secondary">
+                        <i class="fas fa-redo"></i> 新しい分析
+                    </button>
+                </div>
+            </div>
+        `;
+
+        resultsDiv.innerHTML = matchingHtml;
+    }
+
+    showLoading(show, message = '分析中...') {
+        const loading = document.getElementById('loading');
+        if (loading) {
+            if (show) {
+                loading.innerHTML = `
+                    <div class="spinner"></div>
+                    <p>${message}</p>
+                `;
+                loading.style.display = 'block';
+            } else {
+                loading.style.display = 'none';
+            }
+        }
+    }
+
+    showResults() {
+        const results = document.getElementById('results');
+        if (results) {
+            results.style.display = 'block';
+            results.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    hideResults() {
+        const results = document.getElementById('results');
+        if (results) {
+            results.style.display = 'none';
+        }
+    }
+
+    showAlert(message, type = 'info') {
+        // 既存のアラートを削除
+        const existingAlert = document.querySelector('.alert');
+        if (existingAlert) {
+            existingAlert.remove();
+        }
+
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type}`;
+        alert.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
+            ${message}
+        `;
+
+        const container = document.querySelector('.main-container');
+        if (container) {
+            container.insertBefore(alert, container.firstChild);
+            
+            // 3秒後に自動削除
+            setTimeout(() => {
+                alert.remove();
+            }, 3000);
+        }
+    }
+
+    connectWith(username) {
+        this.showAlert(`${username}さんに接続リクエストを送信しました！`, 'success');
+        // 実際の接続処理はここに実装
+    }
+
+    viewProfile(username) {
+        this.showAlert(`${username}さんのプロフィールを表示します`, 'info');
+        // プロフィール表示処理はここに実装
+    }
+
+    shareResults() {
+        if (navigator.share && this.analysisResults) {
+            navigator.share({
+                title: 'TOU Connect 分析結果',
+                text: 'TOU Connectで学習プロフィールを分析しました！',
+                url: window.location.href
+            });
+        } else {
+            // フォールバック: クリップボードにコピー
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                this.showAlert('リンクをクリップボードにコピーしました！', 'success');
+            });
+        }
+    }
+
+    newAnalysis() {
+        this.currentUser = null;
+        this.analysisResults = null;
+        this.hideResults();
+        document.getElementById('username').value = '';
+        document.getElementById('username').focus();
+        this.showAlert('新しい分析を開始できます', 'info');
+    }
+
+    triggerAnalysis() {
+        const form = document.getElementById('analyzeForm');
+        if (form) {
+            form.dispatchEvent(new Event('submit'));
+        }
+    }
+
+    saveToLocalStorage(data) {
+        try {
+            localStorage.setItem('touConnect_lastAnalysis', JSON.stringify({
+                username: data.username,
+                timestamp: data.timestamp,
+                analysis: data.analysis
+            }));
+        } catch (error) {
+            console.warn('ローカルストレージ保存エラー:', error);
+        }
+    }
+
+    loadSavedData() {
+        try {
+            const saved = localStorage.getItem('touConnect_lastAnalysis');
+            if (saved) {
+                const data = JSON.parse(saved);
+                // 24時間以内のデータのみ復元
+                const age = Date.now() - new Date(data.timestamp).getTime();
+                if (age < 24 * 60 * 60 * 1000) {
+                    document.getElementById('username').value = data.username;
+                }
+            }
+        } catch (error) {
+            console.warn('ローカルストレージ読み込みエラー:', error);
+        }
+    }
+}
+
+// アプリケーション初期化
+let touConnect;
+document.addEventListener('DOMContentLoaded', () => {
+    touConnect = new TouConnect();
+});
+
+// PWA対応
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/static/js/sw.js')
+            .then((registration) => {
+                console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+                console.log('SW registration failed: ', registrationError);
+            });
+    });
+}

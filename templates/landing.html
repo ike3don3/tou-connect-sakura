@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOU Connect - 東京通信大学 学友マッチングプラットフォーム</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modern.css') }}">
+    <meta name="description" content="AI活用で東京通信大学の学生同士をつなぐ革新的なマッチングプラットフォーム。あなたに最適な学習パートナーを見つけよう。">
+    <meta property="og:title" content="TOU Connect - 学友マッチング">
+    <meta property="og:description" content="AI分析で最適な学習パートナーを見つけよう">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://touconnect.com">
+    <meta property="og:image" content="https://touconnect.com/static/images/og-image.png">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#6366f1">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            color: #6366f1;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            color: #6366f1;
+        }
+        
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .floating-element {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .section {
+            padding: 5rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: var(--text-primary);
+        }
+        
+        .features-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .showcase-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .showcase-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+        
+        .showcase-icon {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            display: block;
+        }
+        
+        .stats-section {
+            background: var(--light-color);
+            text-align: center;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .stat-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            display: block;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .features-showcase {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ヒーローセクション -->
+    <section class="hero-section">
+        <div class="floating-elements">
+            <div class="floating-element" style="top: 10%; left: 10%; width: 80px; height: 80px; animation-delay: 0s;"></div>
+            <div class="floating-element" style="top: 20%; right: 15%; width: 60px; height: 60px; animation-delay: 2s;"></div>
+            <div class="floating-element" style="bottom: 30%; left: 20%; width: 100px; height: 100px; animation-delay: 4s;"></div>
+            <div class="floating-element" style="bottom: 20%; right: 10%; width: 120px; height: 120px; animation-delay: 1s;"></div>
+        </div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <i class="fas fa-graduation-cap"></i><br>
+                TOU Connect
+            </h1>
+            <p class="hero-subtitle">
+                AI活用で東京通信大学の学生同士をつなぐ<br>
+                革新的な学友マッチングプラットフォーム
+            </p>
+            <a href="#start" class="hero-cta">
+                <i class="fas fa-rocket"></i>
+                今すぐ始める
+            </a>
+        </div>
+    </section>
+
+    <!-- 機能紹介セクション -->
+    <section class="section">
+        <h2 class="section-title">🚀 革新的な機能</h2>
+        <div class="features-showcase">
+            <div class="showcase-card">
+                <i class="fas fa-brain showcase-icon"></i>
+                <h3>AI分析エンジン</h3>
+                <p>Google Gemini AIがあなたのSNS投稿を詳細に分析し、学習特性、興味分野、性格特性を正確に把握。データに基づく科学的なプロフィール作成を実現します。</p>
+            </div>
+            
+            <div class="showcase-card">
+                <i class="fas fa-users showcase-icon"></i>
+                <h3>スマートマッチング</h3>
+                <p>高度な相性アルゴリズムで、学習目標、興味分野、性格、学習スタイルの相性を総合的に判断。85%以上の高精度マッチングを実現しています。</p>
+            </div>
+            
+            <div class="showcase-card">
+                <i class="fas fa-chart-line showcase-icon"></i>
+                <h3>可視化ダッシュボード</h3>
+                <p>D3.jsを活用した美しいデータ可視化で、あなたの学習データ、成長履歴、学友ネットワークを直感的に把握できます。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 統計セクション -->
+    <section class="section stats-section">
+        <h2 class="section-title">📊 実績データ</h2>
+        <div class="stats-container">
+            <div class="stat-item">
+                <span class="stat-number">2,500+</span>
+                <span class="stat-label">登録学生数</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">85%</span>
+                <span class="stat-label">マッチング精度</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">1,200+</span>
+                <span class="stat-label">成功マッチング</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">95%</span>
+                <span class="stat-label">ユーザー満足度</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 開始セクション -->
+    <section id="start" class="section">
+        <div class="main-container">
+            <div class="card">
+                <h2><i class="fas fa-search"></i> プロフィール分析を始める</h2>
+                <p>Twitterアカウントを分析して、あなたの学習特性と興味分野を可視化します。</p>
+                
+                <form id="analyzeForm">
+                    <div class="form-group">
+                        <label for="username" class="form-label">
+                            <i class="fab fa-twitter"></i> Twitterユーザー名
+                        </label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            class="form-input"
+                            placeholder="@を除いたユーザー名を入力"
+                            required
+                            autocomplete="off"
+                        >
+                        <small id="usernameFeedback" class="input-feedback"></small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-brain"></i> AI分析を開始
+                    </button>
+                </form>
+            </div>
+
+            <!-- ローディング表示 -->
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p>分析中...</p>
+            </div>
+
+            <!-- 結果表示エリア -->
+            <div id="results" class="results"></div>
+        </div>
+    </section>
+
+    <!-- CTAセクション -->
+    <section class="section cta-section">
+        <div class="hero-content">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">
+                🎓 学習の新しい扉を開こう
+            </h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">
+                AIが導く最適な学友との出会いで、あなたの学習体験が劇的に変わります
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="#start" class="hero-cta">
+                    <i class="fas fa-play"></i> 今すぐ開始
+                </a>
+                <a href="/matching" class="hero-cta" style="background: transparent; border: 2px solid white; color: white;">
+                    <i class="fas fa-users"></i> マッチング機能
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer style="background: #1f2937; color: white; padding: 3rem 0; text-align: center;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                <div>
+                    <h4 style="margin-bottom: 1rem;"><i class="fas fa-graduation-cap"></i> TOU Connect</h4>
+                    <p>東京通信大学の学生同士をつなぐAI活用マッチングプラットフォーム</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1rem;">機能</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;"><a href="/matching" style="color: #d1d5db;">学友マッチング</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="/resources" style="color: #d1d5db;">学習リソース</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="/analytics" style="color: #d1d5db;">分析ダッシュボード</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1rem;">サポート</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;"><a href="/help" style="color: #d1d5db;">ヘルプ</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="/privacy" style="color: #d1d5db;">プライバシー</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="/terms" style="color: #d1d5db;">利用規約</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div style="border-top: 1px solid #374151; padding-top: 2rem;">
+                <p>&copy; 2025 TOU Connect. All rights reserved.</p>
+                <p style="font-size: 0.875rem; color: #9ca3af; margin-top: 0.5rem;">
+                    Made with ❤️ for Tokyo Online University students
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    
+    <!-- スムーススクロール -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

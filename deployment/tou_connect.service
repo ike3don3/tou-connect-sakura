@@ -1,0 +1,33 @@
+[Unit]
+Description=TOU Connect Web Application
+Documentation=https://github.com/your-org/tou-connect
+After=network.target postgresql.service redis.service
+Wants=postgresql.service redis.service
+
+[Service]
+Type=exec
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/tou_connect
+Environment=PATH=/opt/tou_connect/venv/bin
+Environment=FLASK_ENV=production
+ExecStart=/opt/tou_connect/venv/bin/gunicorn --config gunicorn.conf.py app_launch:app
+ExecReload=/bin/kill -s HUP $MAINPID
+Restart=always
+RestartSec=3
+KillMode=mixed
+TimeoutStopSec=5
+
+# セキュリティ設定
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/tou_connect/logs /opt/tou_connect/data
+
+# リソース制限
+LimitNOFILE=65536
+LimitNPROC=4096
+
+[Install]
+WantedBy=multi-user.target

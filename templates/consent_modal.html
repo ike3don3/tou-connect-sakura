@@ -1,0 +1,309 @@
+<!-- 同意取得モーダル -->
+<div class="modal fade" id="consentModal" tabindex="-1" aria-labelledby="consentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="consentModalLabel">
+                    <i class="fas fa-shield-alt me-2"></i>プライバシーポリシーと利用規約への同意
+                </h5>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>TOU Connectへようこそ！</strong><br>
+                    サービスをご利用いただく前に、プライバシーポリシーと利用規約をご確認いただき、同意をお願いいたします。
+                </div>
+
+                <div class="consent-section mb-4">
+                    <h6 class="fw-bold mb-3">
+                        <i class="fas fa-user-shield me-2 text-primary"></i>プライバシーポリシー
+                    </h6>
+                    <div class="border rounded p-3 mb-3" style="max-height: 200px; overflow-y: auto; background-color: #f8f9fa;">
+                        <p><strong>個人情報の収集と利用について</strong></p>
+                        <ul class="small">
+                            <li>Xアカウント情報（プロフィール、投稿内容）の分析</li>
+                            <li>学習傾向と興味関心の推定</li>
+                            <li>マッチング機能での情報表示</li>
+                            <li>学習リソースの個人化推薦</li>
+                        </ul>
+                        <p><strong>データ保護措置</strong></p>
+                        <ul class="small">
+                            <li>暗号化による安全な保存</li>
+                            <li>厳格なアクセス制御</li>
+                            <li>GDPR準拠のデータ管理</li>
+                        </ul>
+                        <p class="small text-muted">
+                            詳細は<a href="/privacy" target="_blank">プライバシーポリシー</a>をご確認ください。
+                        </p>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="privacyConsent" required>
+                        <label class="form-check-label" for="privacyConsent">
+                            <a href="/privacy" target="_blank" class="text-decoration-none">プライバシーポリシー</a>を読み、内容に同意します
+                        </label>
+                    </div>
+                </div>
+
+                <div class="consent-section mb-4">
+                    <h6 class="fw-bold mb-3">
+                        <i class="fas fa-file-contract me-2 text-primary"></i>利用規約
+                    </h6>
+                    <div class="border rounded p-3 mb-3" style="max-height: 200px; overflow-y: auto; background-color: #f8f9fa;">
+                        <p><strong>サービス利用について</strong></p>
+                        <ul class="small">
+                            <li>18歳以上の東京通信大学関係者のみ利用可能</li>
+                            <li>学習支援とネットワーキングが目的</li>
+                            <li>適切なマナーでの利用をお願いします</li>
+                        </ul>
+                        <p><strong>禁止事項</strong></p>
+                        <ul class="small">
+                            <li>虚偽情報の提供</li>
+                            <li>他のユーザーへの迷惑行為</li>
+                            <li>商業目的での利用</li>
+                            <li>システムの不正利用</li>
+                        </ul>
+                        <p class="small text-muted">
+                            詳細は<a href="/terms" target="_blank">利用規約</a>をご確認ください。
+                        </p>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="termsConsent" required>
+                        <label class="form-check-label" for="termsConsent">
+                            <a href="/terms" target="_blank" class="text-decoration-none">利用規約</a>を読み、内容に同意します
+                        </label>
+                    </div>
+                </div>
+
+                <div class="consent-section mb-4">
+                    <h6 class="fw-bold mb-3">
+                        <i class="fas fa-robot me-2 text-primary"></i>AI分析への同意
+                    </h6>
+                    <div class="alert alert-light border">
+                        <p class="small mb-2">
+                            <strong>AI分析機能について：</strong><br>
+                            あなたのXアカウント情報をAI（Google Gemini）で分析し、学習傾向や興味関心を推定します。
+                            この分析結果は、より良いマッチングと学習リソース推薦のために使用されます。
+                        </p>
+                        <p class="small mb-0 text-muted">
+                            ※ 分析は匿名化されたデータで行われ、個人を特定できる情報は外部に送信されません。
+                        </p>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="aiAnalysisConsent" required>
+                        <label class="form-check-label" for="aiAnalysisConsent">
+                            AI分析機能の利用に同意します
+                        </label>
+                    </div>
+                </div>
+
+                <div class="consent-info">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>重要：</strong> すべての項目への同意が必要です。同意いただけない場合は、サービスをご利用いただけません。
+                    </div>
+                    
+                    <div class="small text-muted">
+                        <p class="mb-1">
+                            <i class="fas fa-calendar-alt me-1"></i>同意日時：<span id="consentTimestamp"></span>
+                        </p>
+                        <p class="mb-1">
+                            <i class="fas fa-globe me-1"></i>IPアドレス：<span id="userIpAddress">取得中...</span>
+                        </p>
+                        <p class="mb-0">
+                            <i class="fas fa-desktop me-1"></i>ブラウザ：<span id="userAgent"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" id="declineBtn">
+                    <i class="fas fa-times me-2"></i>同意しない
+                </button>
+                <button type="button" class="btn btn-primary" id="agreeBtn" disabled>
+                    <i class="fas fa-check me-2"></i>すべてに同意してサービスを開始
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.consent-section {
+    border-left: 4px solid #0d6efd;
+    padding-left: 1rem;
+}
+
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.modal-content {
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.consent-info {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+#agreeBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 同意モーダルの管理
+    const consentModal = new bootstrap.Modal(document.getElementById('consentModal'));
+    const privacyConsent = document.getElementById('privacyConsent');
+    const termsConsent = document.getElementById('termsConsent');
+    const aiAnalysisConsent = document.getElementById('aiAnalysisConsent');
+    const agreeBtn = document.getElementById('agreeBtn');
+    const declineBtn = document.getElementById('declineBtn');
+    
+    // 現在時刻を表示
+    document.getElementById('consentTimestamp').textContent = new Date().toLocaleString('ja-JP');
+    
+    // ユーザーエージェントを表示
+    document.getElementById('userAgent').textContent = navigator.userAgent.substring(0, 50) + '...';
+    
+    // IPアドレスを取得（簡易版）
+    fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('userIpAddress').textContent = data.ip;
+        })
+        .catch(() => {
+            document.getElementById('userIpAddress').textContent = '取得できませんでした';
+        });
+    
+    // チェックボックスの状態監視
+    function updateAgreeButton() {
+        const allChecked = privacyConsent.checked && termsConsent.checked && aiAnalysisConsent.checked;
+        agreeBtn.disabled = !allChecked;
+        
+        if (allChecked) {
+            agreeBtn.classList.remove('btn-outline-primary');
+            agreeBtn.classList.add('btn-primary');
+        } else {
+            agreeBtn.classList.remove('btn-primary');
+            agreeBtn.classList.add('btn-outline-primary');
+        }
+    }
+    
+    privacyConsent.addEventListener('change', updateAgreeButton);
+    termsConsent.addEventListener('change', updateAgreeButton);
+    aiAnalysisConsent.addEventListener('change', updateAgreeButton);
+    
+    // 同意ボタンクリック
+    agreeBtn.addEventListener('click', function() {
+        const consentData = {
+            privacy_policy: privacyConsent.checked,
+            terms_of_service: termsConsent.checked,
+            ai_analysis: aiAnalysisConsent.checked,
+            timestamp: new Date().toISOString(),
+            ip_address: document.getElementById('userIpAddress').textContent,
+            user_agent: navigator.userAgent
+        };
+        
+        // 同意情報をサーバーに送信
+        fetch('/api/consent', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(consentData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // 同意完了後の処理
+                localStorage.setItem('consentGiven', 'true');
+                consentModal.hide();
+                
+                // 成功メッセージ表示
+                showSuccessMessage('同意が完了しました。サービスをお楽しみください！');
+            } else {
+                showErrorMessage('同意の記録に失敗しました。もう一度お試しください。');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showErrorMessage('エラーが発生しました。もう一度お試しください。');
+        });
+    });
+    
+    // 同意しないボタンクリック
+    declineBtn.addEventListener('click', function() {
+        if (confirm('同意いただけない場合、サービスをご利用いただけません。本当によろしいですか？')) {
+            window.location.href = 'https://www.google.com';
+        }
+    });
+    
+    // 同意状況をチェックして必要に応じてモーダル表示
+    function checkConsentStatus() {
+        const consentGiven = localStorage.getItem('consentGiven');
+        if (!consentGiven) {
+            // サーバーで同意状況をチェック
+            fetch('/api/consent/status')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.consent_required) {
+                        consentModal.show();
+                    } else {
+                        localStorage.setItem('consentGiven', 'true');
+                    }
+                })
+                .catch(() => {
+                    // エラーの場合は安全側に倒してモーダル表示
+                    consentModal.show();
+                });
+        }
+    }
+    
+    // ページ読み込み時に同意状況をチェック
+    checkConsentStatus();
+});
+
+function showSuccessMessage(message) {
+    const alert = document.createElement('div');
+    alert.className = 'alert alert-success alert-dismissible fade show position-fixed';
+    alert.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    alert.innerHTML = `
+        <i class="fas fa-check-circle me-2"></i>${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(alert);
+    
+    setTimeout(() => {
+        if (alert.parentNode) {
+            alert.parentNode.removeChild(alert);
+        }
+    }, 5000);
+}
+
+function showErrorMessage(message) {
+    const alert = document.createElement('div');
+    alert.className = 'alert alert-danger alert-dismissible fade show position-fixed';
+    alert.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    alert.innerHTML = `
+        <i class="fas fa-exclamation-triangle me-2"></i>${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(alert);
+    
+    setTimeout(() => {
+        if (alert.parentNode) {
+            alert.parentNode.removeChild(alert);
+        }
+    }, 5000);
+}
+</script>

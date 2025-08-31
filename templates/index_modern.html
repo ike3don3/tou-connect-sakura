@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOU Connect - 東京通信大学 学友マッチング</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modern.css') }}">
+    <meta name="description" content="東京通信大学の学生同士をつなぐAI活用マッチングプラットフォーム">
+    <meta property="og:title" content="TOU Connect - 学友マッチング">
+    <meta property="og:description" content="AI分析で最適な学習パートナーを見つけよう">
+    <meta property="og:type" content="website">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#6366f1">
+</head>
+<body>
+    <div class="main-container">
+        <!-- ヘッダーセクション -->
+        <header class="header">
+            <h1><i class="fas fa-graduation-cap"></i> TOU Connect</h1>
+            <p class="subtitle">東京通信大学 学友マッチングプラットフォーム</p>
+        </header>
+
+        <!-- メイン機能カード -->
+        <div class="card">
+            <h2><i class="fas fa-search"></i> プロフィール分析を始める</h2>
+            <p>Twitterアカウントを分析して、あなたの学習特性と興味分野を可視化します。</p>
+            
+            <form id="analyzeForm">
+                <div class="form-group">
+                    <label for="username" class="form-label">
+                        <i class="fab fa-twitter"></i> Twitterユーザー名
+                    </label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="form-input"
+                        placeholder="@を除いたユーザー名を入力"
+                        required
+                        autocomplete="off"
+                    >
+                    <small id="usernameFeedback" class="input-feedback"></small>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-brain"></i> AI分析を開始
+                </button>
+            </form>
+        </div>
+
+        <!-- ローディング表示 -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>分析中...</p>
+        </div>
+
+        <!-- 結果表示エリア -->
+        <div id="results" class="results"></div>
+
+        <!-- 機能紹介セクション -->
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>AI分析</h3>
+                <p>Gemini AIがあなたのツイートを分析し、学習特性と興味分野を詳細に解析します。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>スマートマッチング</h3>
+                <p>高度なアルゴリズムで、学習目標や興味が合う最適な学友を見つけ出します。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>可視化</h3>
+                <p>あなたの学習データを美しいグラフとチャートで可視化し、成長を追跡できます。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>プライバシー保護</h3>
+                <p>すべてのデータは暗号化され、プライバシーを最優先に保護されています。</p>
+            </div>
+        </div>
+
+        <!-- ナビゲーションリンク -->
+        <div class="card">
+            <h3><i class="fas fa-compass"></i> その他の機能</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                <a href="/matching" class="btn btn-secondary">
+                    <i class="fas fa-handshake"></i> 学友マッチング
+                </a>
+                <a href="/resources" class="btn btn-secondary">
+                    <i class="fas fa-book"></i> 学習リソース
+                </a>
+                <a href="/privacy" class="btn btn-secondary">
+                    <i class="fas fa-lock"></i> プライバシー
+                </a>
+                <a href="/health" class="btn btn-secondary">
+                    <i class="fas fa-heartbeat"></i> システム状況
+                </a>
+            </div>
+        </div>
+
+        <!-- フッター -->
+        <footer style="text-align: center; margin-top: 3rem; color: white; opacity: 0.8;">
+            <p>&copy; 2025 TOU Connect - 東京通信大学 学友マッチングプラットフォーム</p>
+            <p>
+                <a href="/terms" style="color: white; margin: 0 10px;">利用規約</a>
+                <a href="/privacy" style="color: white; margin: 0 10px;">プライバシーポリシー</a>
+                <a href="mailto:support@touconnect.com" style="color: white; margin: 0 10px;">お問い合わせ</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    
+    <!-- Analytics (本番環境で有効化) -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script> -->
+</body>
+</html>

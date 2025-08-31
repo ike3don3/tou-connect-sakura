@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>デバッグテスト</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-form { margin: 20px 0; }
+        .feedback { margin: 10px 0; padding: 10px; border-radius: 4px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>TOU Connect デバッグテスト</h1>
+    
+    <div class="test-form">
+        <h3>ユーザー名検証テスト</h3>
+        <input type="text" id="testUsername" placeholder="ユーザー名を入力">
+        <button onclick="testValidation()">検証</button>
+        <div id="testFeedback" class="feedback"></div>
+    </div>
+    
+    <div class="test-form">
+        <h3>API呼び出しテスト</h3>
+        <button onclick="testAPI()">API テスト</button>
+        <div id="apiFeedback" class="feedback"></div>
+    </div>
+
+    <script>
+        function testValidation() {
+            const input = document.getElementById('testUsername');
+            const feedback = document.getElementById('testFeedback');
+            
+            try {
+                let value = input.value.trim();
+                
+                // @マークを自動で削除
+                if (value.startsWith('@')) {
+                    value = value.substring(1);
+                    input.value = value;
+                }
+                
+                // Twitter ユーザー名の検証ルール
+                const isValid = /^[a-zA-Z0-9_]{1,15}$/.test(value);
+                
+                if (isValid) {
+                    feedback.className = 'feedback success';
+                    feedback.textContent = '有効なユーザー名です: ' + value;
+                } else {
+                    feedback.className = 'feedback error';
+                    feedback.textContent = '無効なユーザー名です: ' + value;
+                }
+                
+                console.log('Test validation:', { value, isValid });
+                
+            } catch (error) {
+                feedback.className = 'feedback error';
+                feedback.textContent = 'エラー: ' + error.message;
+                console.error('Validation error:', error);
+            }
+        }
+        
+        async function testAPI() {
+            const feedback = document.getElementById('apiFeedback');
+            
+            try {
+                feedback.textContent = 'APIテスト中...';
+                
+                const response = await fetch('http://127.0.0.1:5000/api/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username: 'testuser' })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    feedback.className = 'feedback success';
+                    feedback.textContent = 'API成功: ' + JSON.stringify(data).substring(0, 100) + '...';
+                } else {
+                    feedback.className = 'feedback error';
+                    feedback.textContent = 'API失敗: ' + data.error;
+                }
+                
+            } catch (error) {
+                feedback.className = 'feedback error';
+                feedback.textContent = 'API エラー: ' + error.message;
+                console.error('API error:', error);
+            }
+        }
+        
+        // エラー監視
+        window.addEventListener('error', function(e) {
+            console.error('Script error:', e.error, 'at', e.filename, ':', e.lineno);
+        });
+    </script>
+</body>
+</html>

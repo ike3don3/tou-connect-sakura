@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOU Connect - 東京通信大学 学友マッチング</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modern.css') }}">
+    <meta name="description" content="東京通信大学の学生同士をつなぐAI活用マッチングプラットフォーム">
+    <meta property="og:title" content="TOU Connect - 学友マッチング">
+    <meta property="og:description" content="AI分析で最適な学習パートナーを見つけよう">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ url_for('static', filename='images/og-image.jpg', _external=True) }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#6366f1">
+</head>
+<body class="scroll-container ios-safe-area">
+    <div class="main-container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <h1 class="main-title">🎓 TOU Connect</h1>
+            <p class="subtitle">東京通信大学 <span class="highlight-word">学友マッチング</span>プラットフォーム</p>
+        </header>
+
+        <!-- ナビゲーション -->
+        <nav class="card">
+            <div class="nav-buttons flex-mobile-column">
+                <a href="/matching" class="btn btn-success">
+                    <i class="fas fa-handshake icon-highlighted"></i>
+                    <span class="desktop-only">学友マッチング</span>
+                    <span class="mobile-only tablet-only">マッチング</span>
+                </a>
+                <a href="/resources" class="btn btn-warning">
+                    <i class="fas fa-book icon-highlighted"></i>
+                    <span class="desktop-only">学習リソース</span>
+                    <span class="mobile-only tablet-only">リソース</span>
+                </a>
+                <a href="/monitoring" class="btn btn-primary">
+                    <i class="fas fa-chart-line icon-highlighted"></i>
+                    <span class="desktop-only">システム監視</span>
+                    <span class="mobile-only tablet-only">監視</span>
+                </a>
+            </div>
+        </nav>
+        
+        <!-- メインコンテンツ -->
+        <main class="card">
+            <div class="form-section">
+                <h2 class="section-title">
+                    <i class="fas fa-search icon-primary"></i>
+                    アカウント分析
+                </h2>
+                <p class="section-description">
+                    X(Twitter)アカウントを<span class="highlight-word">AI分析</span>して、最適な学習パートナーを見つけましょう
+                </p>
+                
+                <form id="analysis-form" class="analysis-form">
+                    <div class="form-group">
+                        <label for="username" class="form-label">
+                            <i class="fab fa-twitter"></i>
+                            Xアカウント名
+                        </label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            class="form-input" 
+                            placeholder="@username または username" 
+                            autocomplete="off"
+                            required
+                        />
+                        <small class="form-help">例: @yamada_taro または yamada_taro</small>
+                        <div id="usernameFeedback" class="input-feedback"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-large">
+                        <i class="fas fa-search icon-highlighted"></i>
+                        <span>アカウントを分析</span>
+                    </button>
+                </form>
+            </div>
+        </main>
+        
+        <!-- 結果表示エリア -->
+        <div id="result-container" class="result-container" style="display: none;">
+            <div class="card">
+                <!-- ローディング -->
+                <div id="loading" class="loading-state" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>� 分析中...</p>
+                    <small>少々お待ちください</small>
+                </div>
+                
+                <!-- 分析結果 -->
+                <div id="analysis-result" class="analysis-result"></div>
+            </div>
+        </div>
+
+        <!-- 機能紹介 -->
+        <section class="feature-section">
+            <h2 class="section-title text-center">TOU Connect の<span class="highlight-word">特徴</span></h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain icon-accent"></i>
+                    </div>
+                    <h3>AI分析</h3>
+                    <p>最新のAI技術でアカウントを詳細分析し、<span class="highlight-word">学習スタイル</span>や興味を把握します</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users icon-accent"></i>
+                    </div>
+                    <h3>スマートマッチング</h3>
+                    <p>相性の良い<span class="highlight-word">学習パートナー</span>を自動で発見し、効果的な学習グループを作成</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt icon-accent"></i>
+                    </div>
+                    <h3>安全・安心</h3>
+                    <p><span class="highlight-word">プライバシー保護</span>とセキュリティを最優先に、安全な学習環境を提供</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- フッター -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="/privacy" class="footer-link">
+                        <i class="fas fa-shield-alt icon-primary"></i>
+                        プライバシーポリシー
+                    </a>
+                    <a href="/terms" class="footer-link">
+                        <i class="fas fa-file-contract icon-primary"></i>
+                        利用規約
+                    </a>
+                    <a href="/health" class="footer-link">
+                        <i class="fas fa-heartbeat icon-primary"></i>
+                        システム状態
+                    </a>
+                </div>
+                <div class="footer-copyright">
+                    <p>© 2024 TOU Connect. All rights reserved.</p>
+                    <p class="mobile-hidden">東京通信大学 <span class="highlight-word">学友マッチング</span>プラットフォーム</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // レスポンシブ対応のJavaScript
+        const AnalysisApp = {
+            init() {
+                this.bindEvents();
+                this.setupResponsiveFeatures();
+            },
+
+            bindEvents() {
+                const form = document.getElementById('analysis-form');
+                const usernameInput = document.getElementById('username');
+                
+                form.addEventListener('submit', this.handleSubmit.bind(this));
+                usernameInput.addEventListener('keypress', this.handleKeyPress.bind(this));
+                
+                // ユーザー名のリアルタイム検証
+                usernameInput.addEventListener('input', this.validateUsername.bind(this));
+                usernameInput.addEventListener('blur', this.validateUsername.bind(this));
+                
+                // レスポンシブメニュー用（画面固定問題を避けるため最小限に）
+                // window.addEventListener('resize', this.handleResize.bind(this));
+            },
+
+            setupResponsiveFeatures() {
+                // タッチデバイス検出
+                if ('ontouchstart' in window) {
+                    document.body.classList.add('touch-device');
+                }
+                
+                // PWA対応（オプション）
+                if ('serviceWorker' in navigator) {
+                    this.registerServiceWorker();
+                }
+                
+                // 初期viewport調整を安全に実行
+                this.safeViewportAdjustment();
+            },
+            
+            safeViewportAdjustment() {
+                // 安全なビューポート調整
+                try {
+                    // モバイル Safari の 100vh 問題対策
+                    if (window.innerHeight > 0) {
+                        const vh = window.innerHeight * 0.01;
+                        document.documentElement.style.setProperty('--safe-vh', `${vh}px`);
+                    }
+                } catch (error) {
+                    console.warn('Viewport adjustment failed:', error);
+                }
+            },
+
+            handleSubmit(e) {
+                e.preventDefault();
+                this.analyzeAccount();
+            },
+
+            handleKeyPress(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.analyzeAccount();
+                }
+            },
+            
+            validateUsername(e) {
+                try {
+                    const input = e.target;
+                    const feedback = document.getElementById('usernameFeedback');
+                    
+                    if (!input || !feedback) {
+                        console.error('Required elements not found');
+                        return;
+                    }
+                    
+                    let value = input.value.trim();
+                    
+                    // @マークを自動で削除
+                    if (value.startsWith('@')) {
+                        value = value.substring(1);
+                        input.value = value;
+                    }
+                    
+                    // フィードバックをクリア
+                    feedback.className = 'input-feedback';
+                    feedback.textContent = '';
+                    
+                    if (value === '') {
+                        return; // 空の場合は何も表示しない
+                    }
+                    
+                    // Twitter ユーザー名の検証ルール - より厳密な検証
+                    let isValid = false;
+                    try {
+                        // 正規表現を安全に作成
+                        const pattern = /^[a-zA-Z0-9_]{1,15}$/;
+                        isValid = pattern.test(value);
+                        console.log('Regex test:', { value, pattern: pattern.toString(), isValid });
+                    } catch (regexError) {
+                        console.error('Regex error:', regexError);
+                        isValid = false;
+                    }
+                    
+                    if (isValid) {
+                        feedback.className = 'input-feedback success';
+                        feedback.innerHTML = '<i class="fas fa-check-circle"></i> 有効なユーザー名です';
+                    } else {
+                        feedback.className = 'input-feedback error';
+                        
+                        if (value.length > 15) {
+                            feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i> ユーザー名は15文字以内で入力してください';
+                        } else {
+                            try {
+                                const basicPattern = /^[a-zA-Z0-9_]+$/;
+                                if (!basicPattern.test(value)) {
+                                    feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i> 英数字とアンダースコア(_)のみ使用可能です';
+                                } else {
+                                    feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i> 無効なユーザー名です';
+                                }
+                            } catch (basicRegexError) {
+                                console.error('Basic regex error:', basicRegexError);
+                                feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i> 無効なユーザー名です';
+                            }
+                        }
+                    }
+                    
+                    console.log('Username validation:', { value, isValid });
+                } catch (error) {
+                    console.error('Username validation error:', error);
+                }
+            },
+            
+            safeSmoothScroll(element) {
+                // 安全なスムーズスクロール実装
+                try {
+                    if (element && typeof element.scrollIntoView === 'function') {
+                        // requestAnimationFrame を使用して安全にスクロール
+                        requestAnimationFrame(() => {
+                            element.scrollIntoView({ 
+                                behavior: 'smooth', 
+                                block: 'start',
+                                inline: 'nearest'
+                            });
+                        });
+                    }
+                } catch (error) {
+                    console.warn('Smooth scroll failed, using fallback:', error);
+                    // フォールバック: 通常のスクロール
+                    if (element) {
+                        element.scrollIntoView();
+                    }
+                }
+            },
+
+            handleResize() {
+                // リサイズ時の処理（画面固定を回避するため最小限に）
+                // this.updateViewport(); // 一時的に無効化
+            },
+
+            updateViewport() {
+                // ビューポートサイズに応じた動的調整（問題回避のため無効化）
+                // const vh = window.innerHeight * 0.01;
+                // document.documentElement.style.setProperty('--vh', `${vh}px`);
+            },
+
+            async analyzeAccount() {
+                const username = document.getElementById('username').value.trim();
+                const resultContainer = document.getElementById('result-container');
+                const loadingDiv = document.getElementById('loading');
+                const analysisDiv = document.getElementById('analysis-result');
+                
+                if (!username) {
+                    this.showNotification('ユーザー名を入力してください', 'warning');
+                    return;
+                }
+                
+                // ユーザー名の検証とクリーンアップ
+                const cleanUsername = username.replace(/^@/, '');
+                
+                // 基本的な検証 - 安全な正規表現使用
+                try {
+                    const validationPattern = /^[a-zA-Z0-9_]{1,15}$/;
+                    if (!validationPattern.test(cleanUsername)) {
+                        this.showNotification('無効なユーザー名です（英数字と_のみ、1-15文字）', 'error');
+                        return;
+                    }
+                } catch (validationError) {
+                    console.error('Validation pattern error:', validationError);
+                    this.showNotification('ユーザー名の検証でエラーが発生しました', 'error');
+                    return;
+                }
+                
+                // 入力フィールドを更新
+                document.getElementById('username').value = cleanUsername;
+                
+                // 結果表示エリアを表示
+                resultContainer.style.display = 'block';
+                loadingDiv.style.display = 'block';
+                analysisDiv.innerHTML = '';
+                
+                // 安全なスクロール
+                this.safeSmoothScroll(resultContainer);
+                
+                try {
+                    const response = await fetch('/api/analyze', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ username: cleanUsername })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!data.success) {
+                        throw new Error(data.error || 'サーバーエラーが発生しました');
+                    }
+                    
+                    this.displayResults(data.analysis);
+                    this.showNotification('分析が完了しました！', 'success');
+                    
+                } catch (error) {
+                    console.error('Analysis error:', error);
+                    this.displayError(error.message);
+                } finally {
+                    loadingDiv.style.display = 'none';
+                }
+            },
+
+            displayResults(data) {
+                const analysisDiv = document.getElementById('analysis-result');
+                
+                let matchesHtml = '';
+                if (data.matches && data.matches.length > 0) {
+                    matchesHtml = `
+                        <div class="matches-section">
+                            <h4><i class="fas fa-handshake"></i> 学友マッチング候補</h4>
+                            <div class="matches-grid">
+                                ${data.matches.map(match => `
+                                    <div class="match-card">
+                                        <div class="match-header">
+                                            <strong>${match.display_name}</strong>
+                                            <span class="username">@${match.username}</span>
+                                        </div>
+                                        <div class="compatibility-score">${match.compatibility_score}%</div>
+                                        <div class="match-reasons">
+                                            ${match.match_reasons.map(reason => `<span class="reason-tag">${reason}</span>`).join('')}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // 分析結果セクションの改善
+                let analysisHtml = '';
+                if (data.analysis) {
+                    const analysis = data.analysis;
+                    analysisHtml = `
+                        <div class="analysis-section">
+                            <h4><i class="fas fa-brain"></i> AI分析結果</h4>
+                            <div class="analysis-content">
+                                <div class="analysis-item">
+                                    <label>興味・関心</label>
+                                    <div class="tags">
+                                        ${analysis.interests ? analysis.interests.map(interest => `<span class="tag">${interest}</span>`).join('') : ''}
+                                    </div>
+                                </div>
+                                <div class="analysis-item">
+                                    <label>学習スタイル</label>
+                                    <span>${analysis.learning_style || 'データなし'}</span>
+                                </div>
+                                <div class="analysis-item">
+                                    <label>性格特性</label>
+                                    <div class="tags">
+                                        ${analysis.personality_traits ? analysis.personality_traits.map(trait => `<span class="tag">${trait}</span>`).join('') : ''}
+                                    </div>
+                                </div>
+                                <div class="analysis-item">
+                                    <label>学習の好み</label>
+                                    <div class="tags">
+                                        ${analysis.study_preferences ? analysis.study_preferences.map(pref => `<span class="tag">${pref}</span>`).join('') : ''}
+                                    </div>
+                                </div>
+                                <div class="analysis-item">
+                                    <label>活動レベル</label>
+                                    <span>${analysis.activity_level || 'データなし'}</span>
+                                </div>
+                                <div class="analysis-item">
+                                    <label>活動パターン</label>
+                                    <span>${analysis.engagement_pattern || 'データなし'}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                analysisDiv.innerHTML = `
+                    <div class="result-header">
+                        <h3><i class="fas fa-chart-bar"></i> @${data.username} の分析結果</h3>
+                        ${data.api_note ? `<div class="api-notice"><i class="fas fa-info-circle"></i> ${data.api_note}</div>` : ''}
+                    </div>
+                    
+                    <div class="account-info-section">
+                        <h4><i class="fas fa-user"></i> アカウント情報</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>表示名</label>
+                                <span>${data.display_name}</span>
+                            </div>
+                            ${!data.api_note && typeof data.followers_count === 'number' ? `
+                            <div class="info-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number">${data.followers_count.toLocaleString()}</span>
+                                    <span class="stat-label">フォロワー</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">${data.following_count.toLocaleString()}</span>
+                                    <span class="stat-label">フォロー</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">${data.tweets_count.toLocaleString()}</span>
+                                    <span class="stat-label">ツイート</span>
+                                </div>
+                            </div>
+                            ` : `
+                            <div class="api-limit-notice">
+                                <i class="fas fa-clock"></i>
+                                <p>現在、Twitter API制限により詳細な統計情報を取得できません。</p>
+                                <small>推定に基づく分析とマッチング結果を表示しています。</small>
+                            </div>
+                            `}
+                            <div class="info-item">
+                                <label>アカウント作成</label>
+                                <span>${data.account_created}</span>
+                            </div>
+                            ${!data.api_note && data.description && !data.description.includes("Twitter API制限") ? `
+                            <div class="info-item">
+                                <label>プロフィール</label>
+                                <span>${data.description}</span>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                    
+                    ${analysisHtml}
+                    
+                    ${matchesHtml}
+                    
+                    <div class="save-notification">
+                        <i class="fas fa-save"></i>
+                        <span>分析結果はデータベースに保存されました</span>
+                    </div>
+                `;
+                
+                this.showNotification('分析が完了しました', 'success');
+            },
+
+            displayError(message) {
+                const analysisDiv = document.getElementById('analysis-result');
+                analysisDiv.innerHTML = `
+                    <div class="alert alert-error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>エラー: ${message}</span>
+                    </div>
+                `;
+                this.showNotification('エラーが発生しました', 'error');
+            },
+
+            showNotification(message, type = 'info') {
+                // Toast通知の実装
+                const notification = document.createElement('div');
+                notification.className = `notification notification-${type}`;
+                notification.innerHTML = `
+                    <i class="fas fa-${this.getNotificationIcon(type)}"></i>
+                    <span>${message}</span>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 100);
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
+            },
+
+            getNotificationIcon(type) {
+                const icons = {
+                    success: 'check-circle',
+                    error: 'exclamation-circle',
+                    warning: 'exclamation-triangle',
+                    info: 'info-circle'
+                };
+                return icons[type] || 'info-circle';
+            },
+
+            async registerServiceWorker() {
+                try {
+                    await navigator.serviceWorker.register('/static/js/sw.js');
+                } catch (error) {
+                    console.log('ServiceWorker registration failed');
+                }
+            }
+        };
+
+        // アプリケーション初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            AnalysisApp.init();
+        });
+
+        // レガシー関数（後方互換性）
+        function analyzeAccount() {
+            AnalysisApp.analyzeAccount();
+        }
+
+        // デバッグ用：エラー監視強化
+        window.addEventListener('error', function(e) {
+            console.error('Script error details:', {
+                message: e.message,
+                filename: e.filename,
+                lineno: e.lineno,
+                colno: e.colno,
+                error: e.error,
+                stack: e.error ? e.error.stack : null
+            });
+            
+            // エラーメッセージの表示
+            if (e.message && e.message.includes('pattern')) {
+                console.error('PATTERN ERROR DETECTED:', e.message);
+                alert('正規表現エラーが検出されました: ' + e.message);
+            }
+        });
+
+        // 未処理のPromise拒否もキャッチ
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('Unhandled promise rejection:', e.reason);
+        });
+
+        // Bootstrap確認
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof bootstrap === 'undefined') {
+                console.error('Bootstrap is not loaded!');
+                alert('Bootstrap CSSライブラリが読み込まれていません。同意機能が正常に動作しない可能性があります。');
+            } else {
+                console.log('Bootstrap loaded successfully');
+            }
+        });
+    </script>
+
+    <!-- 同意取得モーダル -->
+    {% include 'consent_modal_simple.html' %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

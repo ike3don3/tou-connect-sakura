@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOU Connect - Spectrum.Art #013 カラーテスト</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="static/css/modern.css">
+    <style>
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .color-box {
+            padding: 2rem 1rem;
+            text-align: center;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .color-primary { background: var(--primary-color); color: var(--text-highlighted); }
+        .color-secondary { background: var(--secondary-color); color: var(--text-highlighted); }
+        .color-accent { background: var(--accent-color); color: var(--text-highlighted); }
+        .color-header { background: var(--header-bg); color: var(--text-primary); }
+        .color-light { background: var(--light-color); color: var(--text-primary); border: 2px solid var(--border-color); }
+        
+        .demo-section {
+            margin: 3rem 0;
+        }
+        
+        .component-demo {
+            display: grid;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <h1 class="main-title">🎨 Spectrum.Art #013</h1>
+            <p class="subtitle">TOU Connect カラーテーマデモ</p>
+        </header>
+
+        <!-- カラーパレット -->
+        <section class="card">
+            <h2 class="section-title">🎨 カラーパレット</h2>
+            <div class="color-palette">
+                <div class="color-box color-primary">
+                    <h4>Primary Blue</h4>
+                    <p>#000DB3</p>
+                    <small>メインボタン・見出し</small>
+                </div>
+                
+                <div class="color-box color-secondary">
+                    <h4>Secondary Blue</h4>
+                    <p>#00BFFF</p>
+                    <small>セカンダリボタン</small>
+                </div>
+                
+                <div class="color-box color-accent">
+                    <h4>Coral Pink</h4>
+                    <p>#F88081</p>
+                    <small>アクセント・アイコン</small>
+                </div>
+                
+                <div class="color-box color-header">
+                    <h4>Header Background</h4>
+                    <p>#F9F4FD</p>
+                    <small>ヘッダー背景</small>
+                </div>
+                
+                <div class="color-box color-light">
+                    <h4>Base White</h4>
+                    <p>#FFFFFF</p>
+                    <small>メイン背景</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- ボタンデモ -->
+        <section class="card">
+            <h2 class="section-title">🔘 ボタンスタイル</h2>
+            <div class="component-demo">
+                <div>
+                    <h4>Primary Buttons</h4>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-search icon-highlighted"></i>
+                        Primary Button
+                    </button>
+                    <button class="btn btn-success">
+                        <i class="fas fa-check icon-highlighted"></i>
+                        Success Button
+                    </button>
+                </div>
+                
+                <div>
+                    <h4>Secondary Buttons</h4>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-info icon-highlighted"></i>
+                        Secondary Button
+                    </button>
+                    <button class="btn btn-warning">
+                        <i class="fas fa-exclamation icon-highlighted"></i>
+                        Warning Button
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- テキストスタイル -->
+        <section class="card">
+            <h2 class="section-title">📝 テキストスタイル</h2>
+            <div class="component-demo">
+                <div>
+                    <h1 class="main-title">大きなメインタイトル</h1>
+                    <h3 style="color: var(--primary-color);">見出しテキスト（プライマリ）</h3>
+                    <p>通常のボディテキスト - クリーンで読みやすい黒色のテキストです。</p>
+                    <p>ハイライトされた単語: <span class="highlight-word">重要な情報</span>や<span class="highlight-word">キーワード</span></p>
+                    <div class="highlight">ハイライトボックス - コーラルピンクの背景に白文字</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- アイコンデモ */
+        <section class="card">
+            <h2 class="section-title">⭐ アイコンスタイル</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain icon-accent"></i>
+                    </div>
+                    <h3>アクセントアイコン</h3>
+                    <p>コーラルピンク（#F88081）のアイコン</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heart icon-primary"></i>
+                    </div>
+                    <h3>プライマリアイコン</h3>
+                    <p>プライマリブルー（#000DB3）のアイコン</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-star" style="color: var(--secondary-color);"></i>
+                    </div>
+                    <h3>セカンダリアイコン</h3>
+                    <p>セカンダリブルー（#00BFFF）のアイコン</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- アラート・通知 -->
+        <section class="card">
+            <h2 class="section-title">🔔 アラート・通知</h2>
+            <div class="component-demo">
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>成功メッセージ - プライマリブルーで表示</span>
+                </div>
+                
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>エラーメッセージ - コーラルピンクで表示</span>
+                </div>
+                
+                <div class="emphasis-box">
+                    <i class="fas fa-star"></i>
+                    重要な情報ボックス - コーラルピンク背景に白文字
+                </div>
+            </div>
+        </section>
+
+        <!-- 統計カード -->
+        <section class="card">
+            <h2 class="section-title">📊 統計カード</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">1,234</span>
+                    <span class="stat-label">登録ユーザー</span>
+                </div>
+                
+                <div class="stat-card">
+                    <span class="stat-number">567</span>
+                    <span class="stat-label">マッチング成功</span>
+                </div>
+                
+                <div class="stat-card">
+                    <span class="stat-number">89%</span>
+                    <span class="stat-label">満足度</span>
+                </div>
+                
+                <div class="stat-card">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">サポート</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- フォームデモ -->
+        <section class="card">
+            <div class="card-header">
+                <h3>フォームデモ</h3>
+            </div>
+            <form class="analysis-form">
+                <div class="form-group">
+                    <label for="demo-input" class="form-label">
+                        <i class="fab fa-twitter icon-primary"></i>
+                        サンプル入力フィールド
+                    </label>
+                    <input 
+                        type="text" 
+                        id="demo-input" 
+                        class="form-input" 
+                        placeholder="入力例..." 
+                    />
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-large">
+                    <i class="fas fa-search icon-highlighted"></i>
+                    <span>送信ボタン</span>
+                </button>
+            </form>
+        </section>
+
+        <!-- カラー説明 -->
+        <section class="card">
+            <h2 class="section-title">📋 カラースキーム詳細</h2>
+            <div style="line-height: 1.8;">
+                <h4 style="color: var(--primary-color);">Spectrum.Art #013 テーマ</h4>
+                <ul>
+                    <li><strong>ベース:</strong> クリーンでシンプルな白基調</li>
+                    <li><strong>プライマリ:</strong> #000DB3 - メインボタン、見出し</li>
+                    <li><strong>セカンダリ:</strong> #00BFFF - セカンダリボタン</li>
+                    <li><strong>アクセント:</strong> #F88081 - ハイライト、アイコン</li>
+                    <li><strong>ヘッダー背景:</strong> #F9F4FD - 薄紫のヘッダー</li>
+                    <li><strong>テキスト:</strong> #000000 - 純黒でクリアな可読性</li>
+                </ul>
+                
+                <hr class="clean-separator">
+                
+                <h4 style="color: var(--primary-color);">デザイン特徴</h4>
+                <ul>
+                    <li>✨ <span class="highlight-word">ミニマル</span>でフレッシュな印象</li>
+                    <li>🎨 <span class="highlight-word">ブルー</span>と<span class="highlight-word">コーラルピンク</span>のアクセント</li>
+                    <li>📖 高い<span class="highlight-word">可読性</span>と<span class="highlight-word">アクセシビリティ</span></li>
+                    <li>📱 全デバイスで<span class="highlight-word">一貫した体験</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- フッター -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#" class="footer-link">
+                        <i class="fas fa-palette icon-primary"></i>
+                        カラーテーマ
+                    </a>
+                    <a href="#" class="footer-link">
+                        <i class="fas fa-brush icon-primary"></i>
+                        デザインシステム
+                    </a>
+                    <a href="#" class="footer-link">
+                        <i class="fas fa-heart icon-primary"></i>
+                        Spectrum.Art
+                    </a>
+                </div>
+                <div class="footer-copyright">
+                    <p>© 2024 TOU Connect - <span class="highlight-word">Spectrum.Art #013</span> Theme</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // カラー値をコピーする機能
+        document.querySelectorAll('.color-box').forEach(box => {
+            box.addEventListener('click', () => {
+                const colorCode = box.querySelector('p').textContent;
+                navigator.clipboard.writeText(colorCode).then(() => {
+                    alert(`${colorCode} をコピーしました！`);
+                });
+            });
+        });
+        
+        // ページロード時の確認
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🎨 Spectrum.Art #013 カラーテーマ読み込み完了');
+            console.log('カラーボックスをクリックすると色コードがコピーされます');
+        });
+    </script>
+</body>
+</html>

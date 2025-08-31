@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - サーバーエラー | TOU Connect</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modern.css') }}">
+</head>
+<body class="scroll-container ios-safe-area">
+    <div class="main-container">
+        <div class="error-container">
+            <h1>500</h1>
+            <h2>内部サーバーエラー</h2>
+            <p>申し訳ございません。一時的なサーバーエラーが発生しました。<br>しばらく時間をおいて再度お試しください。</p>
+            <a href="/" class="btn btn-primary">ホームに戻る</a>
+        </div>
+    </div>
+    
+    <style>
+        .error-container {
+            text-align: center;
+            padding: 4rem 2rem;
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+        
+        .error-container h1 {
+            font-size: 6rem;
+            color: var(--danger-color);
+            margin-bottom: 1rem;
+        }
+        
+        .error-container h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .error-container p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+    </style>
+</body>
+</html>

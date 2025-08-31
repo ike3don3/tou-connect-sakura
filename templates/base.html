@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TOU Connect{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modern.css') }}">
+    <meta name="description" content="{% block description %}東京通信大学の学生同士をつなぐAI活用マッチングプラットフォーム{% endblock %}">
+</head>
+<body class="scroll-container ios-safe-area">
+    <div class="main-container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <h1 class="main-title">
+                <a href="/" style="text-decoration: none; color: inherit;">🎓 TOU Connect</a>
+            </h1>
+            <p class="subtitle">東京通信大学 <span class="highlight-word">学友マッチング</span>プラットフォーム</p>
+        </header>
+
+        <!-- ナビゲーション -->
+        <nav class="card">
+            <div class="nav-buttons flex-mobile-column">
+                <a href="/matching" class="btn btn-success">
+                    <i class="fas fa-handshake icon-highlighted"></i>
+                    <span class="desktop-only">学友マッチング</span>
+                    <span class="mobile-only tablet-only">マッチング</span>
+                </a>
+                <a href="/resources" class="btn btn-warning">
+                    <i class="fas fa-book icon-highlighted"></i>
+                    <span class="desktop-only">学習リソース</span>
+                    <span class="mobile-only tablet-only">リソース</span>
+                </a>
+                <a href="/monitoring" class="btn btn-primary">
+                    <i class="fas fa-chart-line icon-highlighted"></i>
+                    <span class="desktop-only">システム監視</span>
+                    <span class="mobile-only tablet-only">監視</span>
+                </a>
+            </div>
+        </nav>
+        
+        <!-- メインコンテンツ -->
+        <main class="card">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        <!-- フッター -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>サービス</h4>
+                    <ul class="footer-links">
+                        <li><a href="/matching" class="footer-link">学友マッチング</a></li>
+                        <li><a href="/resources" class="footer-link">学習リソース</a></li>
+                        <li><a href="/monitoring" class="footer-link">システム監視</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>サポート</h4>
+                    <ul class="footer-links">
+                        <li><a href="/privacy" class="footer-link">プライバシーポリシー</a></li>
+                        <li><a href="/terms" class="footer-link">利用規約</a></li>
+                        <li><a href="/health" class="footer-link">システム状況</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>お問い合わせ</h4>
+                    <ul class="footer-links">
+                        <li><a href="/about" class="footer-link">About</a></li>
+                        <li><a href="/contact" class="footer-link">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 TOU Connect. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

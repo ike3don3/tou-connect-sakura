@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOU Connect - レスポンシブテスト</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ここに更新されたCSSを含める */
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --dark-color: #1f2937;
+            --light-color: #f9fafb;
+            --border-color: #e5e7eb;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-xl);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 44px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-buttons .btn {
+            flex: 1;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        /* レスポンシブ設定 */
+        .mobile-only { display: none; }
+        .tablet-only { display: none; }
+        .desktop-only { display: block; }
+
+        /* スマートフォン */
+        @media (max-width: 767px) {
+            .main-container {
+                padding: 1rem;
+                max-width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+                line-height: 1.2;
+            }
+            
+            .header .subtitle {
+                font-size: 1rem;
+                padding: 0 1rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+                border-radius: 12px;
+                margin-bottom: 1rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                margin: 2rem 0;
+            }
+            
+            .btn {
+                width: 100%;
+                padding: 1rem;
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+            }
+            
+            .nav-buttons .btn {
+                min-width: unset;
+            }
+            
+            .mobile-only { display: block; }
+            .tablet-only, .desktop-only { display: none; }
+            .mobile-hidden { display: none; }
+        }
+
+        /* タブレット */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .main-container {
+                padding: 1.5rem;
+                max-width: 90%;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .header .subtitle {
+                font-size: 1.125rem;
+            }
+            
+            .card {
+                padding: 2rem;
+                border-radius: 16px;
+            }
+            
+            .feature-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+            
+            .tablet-only { display: block; }
+            .mobile-only, .desktop-only { display: none; }
+            .tablet-hidden { display: none; }
+        }
+
+        /* デスクトップ */
+        @media (min-width: 1025px) {
+            .desktop-only { display: block; }
+            .mobile-only, .tablet-only { display: none; }
+            .desktop-hidden { display: none; }
+        }
+
+        /* 追加のデザイン要素 */
+        .demo-section {
+            margin: 2rem 0;
+        }
+
+        .demo-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        .responsive-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .demo-box {
+            background: var(--light-color);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .demo-box:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .device-info {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin: 1rem auto;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <h1>🎓 TOU Connect</h1>
+            <p class="subtitle">レスポンシブデザインテスト</p>
+        </header>
+
+        <!-- デバイス情報表示 -->
+        <div class="card">
+            <div class="demo-title">現在のデバイス表示</div>
+            <div class="device-info mobile-only">📱 スマートフォン表示</div>
+            <div class="device-info tablet-only">📱 タブレット表示</div>
+            <div class="device-info desktop-only">💻 デスクトップ表示</div>
+        </div>
+
+        <!-- ナビゲーション -->
+        <nav class="card">
+            <div class="nav-buttons">
+                <a href="/" class="btn btn-primary">
+                    <i class="fas fa-home"></i>
+                    <span class="desktop-only">ホーム</span>
+                    <span class="mobile-only tablet-only">ホーム</span>
+                </a>
+                <a href="/matching" class="btn btn-success">
+                    <i class="fas fa-handshake"></i>
+                    <span class="desktop-only">学友マッチング</span>
+                    <span class="mobile-only tablet-only">マッチング</span>
+                </a>
+                <a href="/resources" class="btn btn-warning">
+                    <i class="fas fa-book"></i>
+                    <span class="desktop-only">学習リソース</span>
+                    <span class="mobile-only tablet-only">リソース</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- フォームテスト -->
+        <main class="card">
+            <h2 class="demo-title">
+                <i class="fas fa-search"></i>
+                レスポンシブフォーム
+            </h2>
+            
+            <form class="analysis-form">
+                <div class="form-group">
+                    <label for="username" class="form-label">
+                        <i class="fab fa-twitter"></i>
+                        Xアカウント名
+                    </label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        class="form-input" 
+                        placeholder="@username または username" 
+                        autocomplete="off"
+                    />
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                    <span>アカウントを分析</span>
+                </button>
+            </form>
+        </main>
+
+        <!-- 機能グリッド -->
+        <section class="demo-section">
+            <h2 class="demo-title">レスポンシブグリッド</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI分析</h3>
+                    <p>スマートフォンでは1列、タブレットでは2列、デスクトップでは3列で表示されます</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>マッチング</h3>
+                    <p>画面サイズに応じて自動的にレイアウトが調整されます</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>セキュリティ</h3>
+                    <p>すべてのデバイスで一貫した使いやすいエクスペリエンスを提供</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- レスポンシブボックス -->
+        <section class="card">
+            <h2 class="demo-title">レスポンシブボックス</h2>
+            <div class="responsive-demo">
+                <div class="demo-box">
+                    <h4>Box 1</h4>
+                    <p>このボックスは画面サイズに応じて配置が変わります</p>
+                </div>
+                <div class="demo-box">
+                    <h4>Box 2</h4>
+                    <p>最小幅200pxで自動調整されます</p>
+                </div>
+                <div class="demo-box">
+                    <h4>Box 3</h4>
+                    <p>フレキシブルなグリッドレイアウト</p>
+                </div>
+                <div class="demo-box">
+                    <h4>Box 4</h4>
+                    <p>モバイルフレンドリーなデザイン</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 表示/非表示テスト -->
+        <section class="card">
+            <h2 class="demo-title">デバイス別表示制御</h2>
+            <div style="text-align: center;">
+                <p class="mobile-only" style="color: var(--success-color); font-weight: 600;">
+                    ✅ モバイル専用コンテンツが表示されています
+                </p>
+                <p class="tablet-only" style="color: var(--warning-color); font-weight: 600;">
+                    ✅ タブレット専用コンテンツが表示されています
+                </p>
+                <p class="desktop-only" style="color: var(--primary-color); font-weight: 600;">
+                    ✅ デスクトップ専用コンテンツが表示されています
+                </p>
+            </div>
+        </section>
+
+        <!-- 使用方法 -->
+        <section class="card">
+            <h2 class="demo-title">📋 レスポンシブテスト方法</h2>
+            <div style="text-align: left; max-width: 600px; margin: 0 auto;">
+                <h4>🔧 デベロッパーツール</h4>
+                <ol>
+                    <li>ブラウザでF12キーを押してデベロッパーツールを開く</li>
+                    <li>デバイスツールバーボタン（📱アイコン）をクリック</li>
+                    <li>異なるデバイスサイズを選択してレイアウトを確認</li>
+                </ol>
+                
+                <h4>📏 ブレイクポイント</h4>
+                <ul>
+                    <li><strong>スマートフォン:</strong> 767px以下</li>
+                    <li><strong>タブレット:</strong> 768px - 1024px</li>
+                    <li><strong>デスクトップ:</strong> 1025px以上</li>
+                </ul>
+                
+                <h4>✨ レスポンシブ機能</h4>
+                <ul>
+                    <li>自動的なレイアウト調整</li>
+                    <li>デバイス別コンテンツ表示/非表示</li>
+                    <li>タッチフレンドリーなボタンサイズ</li>
+                    <li>読みやすいフォントサイズ</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // リアルタイムでスクリーンサイズを表示
+        function updateScreenInfo() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            
+            console.log(`画面サイズ: ${width}x${height}px`);
+            
+            // デバイス種別の判定と表示
+            let deviceType = '';
+            if (width <= 767) {
+                deviceType = 'スマートフォン';
+            } else if (width <= 1024) {
+                deviceType = 'タブレット';
+            } else {
+                deviceType = 'デスクトップ';
+            }
+            
+            document.title = `TOU Connect - ${deviceType} (${width}px)`;
+        }
+
+        // 初期表示と画面サイズ変更時に実行
+        updateScreenInfo();
+        window.addEventListener('resize', updateScreenInfo);
+
+        // フォーム送信のテスト
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('レスポンシブデザインのテストフォームです！');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!-- 簡易同意取得モーダル -->
+<div class="modal fade" id="consentModal" tabindex="-1" aria-labelledby="consentModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #6366f1; color: white;">
+                <h5 class="modal-title" id="consentModalLabel">
+                    <i class="fas fa-shield-alt"></i> 利用規約とプライバシーポリシーへの同意
+                </h5>
+            </div>
+            <div class="modal-body">
+                <div style="background-color: #e3f2fd; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <p><strong>TOU Connectへようこそ！</strong></p>
+                    <p>サービスをご利用いただく前に、利用規約とプライバシーポリシーにご同意ください。</p>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <h6><i class="fas fa-user-shield"></i> プライバシーポリシー</h6>
+                    <div style="background-color: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; max-height: 150px; overflow-y: auto;">
+                        <ul style="font-size: 0.9rem; margin: 0;">
+                            <li>学習傾向と興味関心の分析</li>
+                            <li>マッチング機能での情報表示</li>
+                            <li>データの暗号化保存</li>
+                            <li>GDPR準拠のデータ管理</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="privacyConsent" style="margin-right: 0.5rem;">
+                        <label for="privacyConsent">
+                            <a href="/privacy" target="_blank">プライバシーポリシー</a>に同意します
+                        </label>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <h6><i class="fas fa-file-contract"></i> 利用規約</h6>
+                    <div style="background-color: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; max-height: 150px; overflow-y: auto;">
+                        <ul style="font-size: 0.9rem; margin: 0;">
+                            <li>18歳以上の東京通信大学関係者のみ利用可能</li>
+                            <li>学習支援とネットワーキングが目的</li>
+                            <li>虚偽情報の提供禁止</li>
+                            <li>適切なマナーでの利用</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="termsConsent" style="margin-right: 0.5rem;">
+                        <label for="termsConsent">
+                            <a href="/terms" target="_blank">利用規約</a>に同意します
+                        </label>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <h6><i class="fas fa-robot"></i> AI分析への同意</h6>
+                    <div style="background-color: #fff3cd; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <p style="font-size: 0.9rem; margin: 0;">
+                            AIを使用してあなたの学習傾向を分析し、最適なマッチングを提供します。
+                            個人を特定できる情報は外部に送信されません。
+                        </p>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="aiAnalysisConsent" style="margin-right: 0.5rem;">
+                        <label for="aiAnalysisConsent">AI分析機能の利用に同意します</label>
+                    </div>
+                </div>
+
+                <div style="background-color: #fff3cd; padding: 1rem; border-radius: 8px;">
+                    <p style="margin: 0; font-weight: bold;">
+                        <i class="fas fa-exclamation-triangle"></i> 
+                        すべての項目への同意が必要です
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="declineBtn">
+                    <i class="fas fa-times"></i> 同意しない
+                </button>
+                <button type="button" class="btn btn-primary" id="agreeBtn" disabled>
+                    <i class="fas fa-check"></i> すべてに同意してサービスを開始
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.modal-backdrop {
+    background-color: rgba(0,0,0,0.8);
+}
+
+.modal-content {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    border-bottom: none;
+    border-radius: 15px 15px 0 0;
+}
+
+.modal-footer {
+    border-top: none;
+    border-radius: 0 0 15px 15px;
+}
+
+#agreeBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+input[type="checkbox"] {
+    transform: scale(1.2);
+}
+
+label {
+    cursor: pointer;
+}
+
+a {
+    color: #6366f1;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Consent modal script loaded');
+    
+    let consentModal;
+    
+    // Bootstrap 5の場合とBootstrap 4の場合の対応
+    try {
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            // Bootstrap 5
+            consentModal = new bootstrap.Modal(document.getElementById('consentModal'), {
+                backdrop: 'static',
+                keyboard: false
+            });
+        } else if (typeof $ !== 'undefined' && $.fn.modal) {
+            // Bootstrap 4 (jQuery)
+            consentModal = $('#consentModal');
+        } else {
+            // フォールバック：基本的なポップアップ
+            console.warn('Bootstrap not found, using basic popup');
+            showBasicConsent();
+            return;
+        }
+    } catch (e) {
+        console.error('Modal initialization error:', e);
+        showBasicConsent();
+        return;
+    }
+
+    const privacyConsent = document.getElementById('privacyConsent');
+    const termsConsent = document.getElementById('termsConsent');
+    const aiAnalysisConsent = document.getElementById('aiAnalysisConsent');
+    const agreeBtn = document.getElementById('agreeBtn');
+    const declineBtn = document.getElementById('declineBtn');
+    
+    if (!privacyConsent || !termsConsent || !aiAnalysisConsent || !agreeBtn) {
+        console.error('Required elements not found');
+        return;
+    }
+
+    // チェックボックスの状態監視
+    function updateAgreeButton() {
+        const allChecked = privacyConsent.checked && termsConsent.checked && aiAnalysisConsent.checked;
+        agreeBtn.disabled = !allChecked;
+        
+        if (allChecked) {
+            agreeBtn.style.backgroundColor = '#6366f1';
+            agreeBtn.style.opacity = '1';
+        } else {
+            agreeBtn.style.backgroundColor = '#cccccc';
+            agreeBtn.style.opacity = '0.5';
+        }
+    }
+    
+    privacyConsent.addEventListener('change', updateAgreeButton);
+    termsConsent.addEventListener('change', updateAgreeButton);
+    aiAnalysisConsent.addEventListener('change', updateAgreeButton);
+    
+    // 同意ボタンクリック
+    agreeBtn.addEventListener('click', function() {
+        console.log('Agree button clicked');
+        
+        const consentData = {
+            privacy_policy: privacyConsent.checked,
+            terms_of_service: termsConsent.checked,
+            ai_analysis: aiAnalysisConsent.checked,
+            timestamp: new Date().toISOString(),
+            user_agent: navigator.userAgent
+        };
+        
+        // 送信中表示
+        agreeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 処理中...';
+        agreeBtn.disabled = true;
+        
+        // 同意情報をサーバーに送信
+        fetch('/api/consent', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(consentData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Consent response:', data);
+            if (data.success) {
+                // 同意完了
+                localStorage.setItem('consentGiven', 'true');
+                
+                // モーダルを閉じる
+                if (consentModal && consentModal.hide) {
+                    consentModal.hide();
+                } else if (consentModal && consentModal.modal) {
+                    consentModal.modal('hide');
+                }
+                
+                // 成功メッセージ
+                showMessage('同意が完了しました。サービスをお楽しみください！', 'success');
+            } else {
+                showMessage('同意の記録に失敗しました。もう一度お試しください。', 'error');
+                agreeBtn.innerHTML = '<i class="fas fa-check"></i> すべてに同意してサービスを開始';
+                updateAgreeButton();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('エラーが発生しました。もう一度お試しください。', 'error');
+            agreeBtn.innerHTML = '<i class="fas fa-check"></i> すべてに同意してサービスを開始';
+            updateAgreeButton();
+        });
+    });
+    
+    // 同意しないボタンクリック
+    declineBtn.addEventListener('click', function() {
+        if (confirm('同意いただけない場合、サービスをご利用いただけません。本当によろしいですか？')) {
+            window.location.href = 'https://www.google.com';
+        }
+    });
+    
+    // 同意状況をチェック
+    function checkConsentStatus() {
+        const consentGiven = localStorage.getItem('consentGiven');
+        if (!consentGiven) {
+            console.log('Showing consent modal');
+            
+            setTimeout(() => {
+                if (consentModal && consentModal.show) {
+                    consentModal.show();
+                } else if (consentModal && consentModal.modal) {
+                    consentModal.modal('show');
+                } else {
+                    showBasicConsent();
+                }
+            }, 1000);
+        } else {
+            console.log('Consent already given');
+        }
+    }
+    
+    // ページ読み込み時に同意状況をチェック
+    checkConsentStatus();
+});
+
+// Bootstrap未対応時のフォールバック
+function showBasicConsent() {
+    const modal = document.getElementById('consentModal');
+    if (modal) {
+        modal.style.display = 'block';
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0,0,0,0.8)';
+        modal.style.zIndex = '9999';
+        
+        const dialog = modal.querySelector('.modal-dialog');
+        if (dialog) {
+            dialog.style.margin = '50px auto';
+            dialog.style.maxWidth = '800px';
+        }
+    }
+}
+
+function showMessage(message, type) {
+    const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+    const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
+    
+    const alert = document.createElement('div');
+    alert.className = `alert ${alertClass}`;
+    alert.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 10000; min-width: 300px;';
+    alert.innerHTML = `
+        <i class="fas ${icon}"></i> ${message}
+        <button type="button" class="btn-close" onclick="this.parentElement.remove()" style="float: right; background: none; border: none; font-size: 1.2rem;">&times;</button>
+    `;
+    document.body.appendChild(alert);
+    
+    setTimeout(() => {
+        if (alert.parentNode) {
+            alert.parentNode.removeChild(alert);
+        }
+    }, 5000);
+}
+</script>

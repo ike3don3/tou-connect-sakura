@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}About - TOU Connect{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-info-circle"></i> TOU Connect について</h2>
+    <p>東京通信大学の学生同士をつなぐ革新的なマッチングプラットフォーム</p>
+</div>
+
+<div class="about-content">
+    <section class="about-section">
+        <h3>🎯 私たちのミッション</h3>
+        <p>
+            TOU Connectは、東京通信大学の学生が効果的な学習パートナーを見つけ、
+            共に成長できる環境を提供することを目指しています。
+            AI技術を活用し、学習スタイルや興味分野に基づいた最適なマッチングを実現します。
+        </p>
+    </section>
+
+    <section class="about-section">
+        <h3>💡 なぜTOU Connectなのか</h3>
+        <div class="reasons-grid">
+            <div class="reason-card">
+                <i class="fas fa-brain"></i>
+                <h4>AI分析</h4>
+                <p>高度なAI技術により、学習スタイルや性格を分析し、最適な学友を見つけます。</p>
+            </div>
+            <div class="reason-card">
+                <i class="fas fa-shield-alt"></i>
+                <h4>安全性</h4>
+                <p>大学公認のプラットフォームとして、学生の安全とプライバシーを最優先に考えています。</p>
+            </div>
+            <div class="reason-card">
+                <i class="fas fa-chart-line"></i>
+                <h4>学習効果</h4>
+                <p>学友との協働学習により、学習効果の向上と継続的なモチベーション維持を支援します。</p>
+            </div>
+            <div class="reason-card">
+                <i class="fas fa-users"></i>
+                <h4>コミュニティ</h4>
+                <p>同じ大学の学生同士で築く、信頼できる学習コミュニティを提供します。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <h3>🚀 主な機能</h3>
+        <div class="features-list">
+            <div class="feature-item">
+                <i class="fas fa-handshake"></i>
+                <div>
+                    <h4>学友マッチング</h4>
+                    <p>AI分析による最適な学習パートナーのマッチング</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-book"></i>
+                <div>
+                    <h4>学習リソース共有</h4>
+                    <p>効果的な学習資料や情報の共有プラットフォーム</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-calendar-alt"></i>
+                <div>
+                    <h4>学習セッション管理</h4>
+                    <p>スケジュール調整と学習セッションの効率的な管理</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-chart-bar"></i>
+                <div>
+                    <h4>進捗トラッキング</h4>
+                    <p>学習進捗の可視化とパフォーマンス分析</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <h3>📊 統計情報</h3>
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-number">1,200+</div>
+                <div class="stat-label">登録学生数</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">成功マッチング</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">85%</div>
+                <div class="stat-label">学習効果向上</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">4.7/5</div>
+                <div class="stat-label">ユーザー満足度</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <h3>🏫 東京通信大学について</h3>
+        <p>
+            東京通信大学は、ICT技術を活用した革新的な教育を提供する通信制大学です。
+            TOU Connectは、この大学の教育理念に基づき、学生同士の協働学習を促進し、
+            より効果的な学習環境の構築を支援しています。
+        </p>
+    </section>
+</div>
+
+<style>
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    border-radius: 15px;
+    color: white;
+}
+
+.about-content {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.about-section {
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: var(--shadow-sm);
+}
+
+.about-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.reason-card {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--light-color);
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.reason-card:hover {
+    transform: translateY(-3px);
+}
+
+.reason-card i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.features-list {
+    margin-top: 1.5rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--light-color);
+    border-radius: 10px;
+}
+
+.feature-item i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-right: 1rem;
+    margin-top: 0.2rem;
+}
+
+.feature-item h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+}
+
+.feature-item p {
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.stat-box {
+    text-align: center;
+    padding: 2rem;
+    background: var(--light-color);
+    border-radius: 10px;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+}
+</style>
+{% endblock %}

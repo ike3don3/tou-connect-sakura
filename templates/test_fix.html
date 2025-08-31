@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOU Connect 修正テスト</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .test-section h3 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .result {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 TOU Connect 修正結果確認</h1>
+        
+        <div class="status success">
+            ✅ 修正完了：「非公開」表示問題が解決されました
+        </div>
+        
+        <div class="test-section">
+            <h3>修正内容</h3>
+            <ul>
+                <li>API制限時の表示を「API制限中」から「取得中」に変更</li>
+                <li>フロントエンドの条件判定ロジックを改善（api_noteフィールドで判定）</li>
+                <li>ユーザー名からの興味推定アルゴリズムを強化</li>
+                <li>マッチング候補を拡充（日本のプログラミング教育サービスを追加）</li>
+                <li>マッチングアルゴリズムを改善（部分マッチングを考慮）</li>
+            </ul>
+        </div>
+        
+        <div class="test-section">
+            <h3>テスト実行</h3>
+            <button class="test-button" onclick="testIke3don3()">@ike3don3 を分析</button>
+            <button class="test-button" onclick="testOtherAccount()">他のアカウントを分析</button>
+            <div id="test-result" class="result" style="display: none;"></div>
+        </div>
+        
+        <div class="status info">
+            💡 現在Twitter API制限により、推定に基づく分析結果とマッチング候補が表示されます。<br>
+            API制限が解除されると、実際のアカウント情報が正しく表示されます。
+        </div>
+        
+        <div class="test-section">
+            <h3>期待される表示</h3>
+            <ul>
+                <li>フォロワー数、フォロー数、ツイート数：「取得中」（「非公開」ではない）</li>
+                <li>API制限通知が表示される</li>
+                <li>推定興味：テクノロジー、教育</li>
+                <li>マッチング候補：Codecademy、慶應義塾、Khan Academy など</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        async function testIke3don3() {
+            const resultDiv = document.getElementById('test-result');
+            resultDiv.style.display = 'block';
+            resultDiv.textContent = '分析中...';
+            
+            try {
+                const response = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username: 'ike3don3' })
+                });
+                
+                const data = await response.json();
+                resultDiv.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultDiv.textContent = 'エラー: ' + error.message;
+            }
+        }
+        
+        async function testOtherAccount() {
+            const username = prompt('テストするユーザー名を入力してください（@なし）:');
+            if (!username) return;
+            
+            const resultDiv = document.getElementById('test-result');
+            resultDiv.style.display = 'block';
+            resultDiv.textContent = '分析中...';
+            
+            try {
+                const response = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username: username })
+                });
+                
+                const data = await response.json();
+                resultDiv.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultDiv.textContent = 'エラー: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

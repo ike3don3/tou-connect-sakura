@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - TOU Connect{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-envelope"></i> お問い合わせ</h2>
+    <p>ご質問やご要望がございましたら、お気軽にお問い合わせください</p>
+</div>
+
+<div class="contact-content">
+    <div class="contact-grid">
+        <div class="contact-form-section">
+            <h3>メッセージを送信</h3>
+            <form class="contact-form" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label for="name">お名前 *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">メールアドレス *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="student-id">学籍番号（任意）</label>
+                    <input type="text" id="student-id" name="student-id" placeholder="例: 2024001">
+                </div>
+
+                <div class="form-group">
+                    <label for="category">お問い合わせ種別 *</label>
+                    <select id="category" name="category" required>
+                        <option value="">選択してください</option>
+                        <option value="technical">技術的なお問い合わせ</option>
+                        <option value="matching">マッチング機能について</option>
+                        <option value="account">アカウント・登録について</option>
+                        <option value="privacy">プライバシー・セキュリティ</option>
+                        <option value="feedback">ご意見・ご要望</option>
+                        <option value="other">その他</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">メッセージ *</label>
+                    <textarea id="message" name="message" rows="6" required placeholder="詳細をお聞かせください..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-large">
+                    <i class="fas fa-paper-plane"></i> 送信
+                </button>
+            </form>
+        </div>
+
+        <div class="contact-info-section">
+            <h3>お問い合わせ情報</h3>
+            
+            <div class="contact-info-card">
+                <div class="contact-method">
+                    <i class="fas fa-university"></i>
+                    <div>
+                        <h4>運営</h4>
+                        <p>東京通信大学<br>学生支援部</p>
+                    </div>
+                </div>
+
+                <div class="contact-method">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h4>対応時間</h4>
+                        <p>平日 9:00-17:00<br>（土日祝除く）</p>
+                    </div>
+                </div>
+
+                <div class="contact-method">
+                    <i class="fas fa-reply"></i>
+                    <div>
+                        <h4>返信時間</h4>
+                        <p>通常1-2営業日以内<br>にご返信いたします</p>
+                    </div>
+                </div>
+
+                <div class="contact-method">
+                    <i class="fas fa-shield-alt"></i>
+                    <div>
+                        <h4>プライバシー</h4>
+                        <p>お預かりした情報は<br>適切に管理いたします</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-section">
+                <h4>よくあるご質問</h4>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <strong>Q: アカウント登録ができません</strong>
+                        <p>A: 大学のメールアドレスを使用して登録してください。問題が続く場合はお問い合わせください。</p>
+                    </div>
+                    <div class="faq-item">
+                        <strong>Q: マッチング結果が表示されません</strong>
+                        <p>A: プロフィール情報を完全に入力し、興味分野を設定してください。</p>
+                    </div>
+                    <div class="faq-item">
+                        <strong>Q: 学友との連絡方法は？</strong>
+                        <p>A: 安全なプラットフォーム内メッセージ機能をご利用ください。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function handleSubmit(event) {
+    event.preventDefault();
+    
+    // フォームデータの取得
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData);
+    
+    // 送信中の表示
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 送信中...';
+    submitBtn.disabled = true;
+    
+    // 模擬送信処理（実際の実装では適切なAPIエンドポイントに送信）
+    setTimeout(() => {
+        alert('お問い合わせを受け付けました。ご返信までしばらくお待ちください。');
+        
+        // フォームリセット
+        event.target.reset();
+        
+        // ボタンを元に戻す
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }, 2000);
+}
+</script>
+
+<style>
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, var(--info-color), var(--primary-color));
+    border-radius: 15px;
+    color: white;
+}
+
+.contact-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+}
+
+@media (max-width: 768px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+.contact-form-section,
+.contact-info-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+}
+
+.contact-form-section h3,
+.contact-info-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.btn-large {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+}
+
+.contact-info-card {
+    margin-bottom: 2rem;
+}
+
+.contact-method {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--light-color);
+    border-radius: 10px;
+}
+
+.contact-method i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-right: 1rem;
+    margin-top: 0.2rem;
+}
+
+.contact-method h4 {
+    margin: 0 0 0.3rem 0;
+    color: var(--text-primary);
+}
+
+.contact-method p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.faq-section h4 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.faq-item {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: var(--light-color);
+    border-radius: 8px;
+}
+
+.faq-item strong {
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.faq-item p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+</style>
+{% endblock %}
