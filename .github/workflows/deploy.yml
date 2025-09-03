@@ -1,0 +1,53 @@
+name: Deploy to VPS
+on:
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: "Production domain (e.g., touconnect.com)"
+        required: true
+      db_url:
+        description: "DATABASE_URL (e.g., postgresql://user:pass@host:5432/db)"
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Copy repo to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          # 22以外のポートを使う場合のみ有効化:
+          # port: ${{ secrets.SSH_PORT }}
+          source: "."
+          target: "/opt/tou_connect"
+          overwrite: true
+          rm: true
+          exclude: |
+            .git
+            .venv
+            node_modules
+
+      - name: Remote deploy
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          DOMAIN: ${{ github.event.inputs.domain }}
+          DB_URL: ${{ github.event.inputs.db_url }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TWITTER_BEARER_TOKEN: ${{ secrets.TWITTER_BEARER_TOKEN }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          # 22以外のポートを使う場合のみ有効化:
+          # port: ${{ secrets.SSH_PORT }}
+          script: |
+            sudo bash -lc 'chmod +x /opt/tou_connect/scripts/remote_deploy.sh && DOMAIN="$DOMAIN" DB_URL="$DB_URL" GEMINI_API_KEY="$GEMINI_API_KEY" TWITTER_BEARER_TOKEN="$TWITTER_BEARER_TOKEN" bash /opt/tou_connect/scripts/remote_deploy.sh'
+
+            script: |
+              sudo bash -lc 'chmod +x /opt/tou_connect/scripts/remote_deploy.sh && DOMAIN="$DOMAIN" DB_URL="$DB_URL" GEMINI_API_KEY="$GEMINI_API_KEY" TWITTER_BEARER_TOKEN="$TWITTER_BEARER_TOKEN" bash /opt/tou_connect/scripts/remote_deploy.sh'
